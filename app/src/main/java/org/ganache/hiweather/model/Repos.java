@@ -1,14 +1,15 @@
 
 package org.ganache.hiweather.model;
 
+import com.squareup.moshi.Json;
+
 import javax.annotation.Generated;
 
-@Generated("jsonschema2pojo")
-public class Response {
+public class Repos {
 
-    @com.squareup.moshi.Json(name = "header")
+    @Json(name = "header")
     private Header header;
-    @com.squareup.moshi.Json(name = "body")
+    @Json(name = "body")
     private Body body;
 
     public Header getHeader() {

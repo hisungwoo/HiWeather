@@ -3,7 +3,6 @@ package org.ganache.hiweather.model;
 
 import javax.annotation.Generated;
 
-@Generated("jsonschema2pojo")
 public class Header {
 
     @com.squareup.moshi.Json(name = "resultCode")

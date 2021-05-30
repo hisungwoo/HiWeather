@@ -5,17 +5,16 @@ import com.squareup.moshi.Json;
 
 import javax.annotation.Generated;
 
-@Generated("jsonschema2pojo")
 public class Example {
 
     @Json(name = "response")
-    private Response response;
+    private Repos response;
 
-    public Response getResponse() {
+    public Repos getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(Repos response) {
         this.response = response;
     }
 

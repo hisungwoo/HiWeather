@@ -2,13 +2,12 @@
 package org.ganache.hiweather.model;
 import javax.annotation.Generated;
 
-@Generated("jsonschema2pojo")
 public class Body {
 
     @com.squareup.moshi.Json(name = "dataType")
     private String dataType;
     @com.squareup.moshi.Json(name = "items")
-    private com.example.Items items;
+    private Items items;
     @com.squareup.moshi.Json(name = "pageNo")
     private int pageNo;
     @com.squareup.moshi.Json(name = "numOfRows")
@@ -24,11 +23,11 @@ public class Body {
         this.dataType = dataType;
     }
 
-    public com.example.Items getItems() {
+    public Items getItems() {
         return items;
     }
 
-    public void setItems(com.example.Items items) {
+    public void setItems(Items items) {
         this.items = items;
     }
 

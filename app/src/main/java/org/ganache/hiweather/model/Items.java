@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
-@Generated("jsonschema2pojo")
 public class Items {
 
     @Json(name = "item")
