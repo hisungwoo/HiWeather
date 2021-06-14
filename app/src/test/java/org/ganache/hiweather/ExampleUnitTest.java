@@ -29,6 +29,7 @@ public class ExampleUnitTest {
 
     @Test
     public void apiTest() throws IOException {
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(WeatherService.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -40,7 +41,7 @@ public class ExampleUnitTest {
 
         String key = "E6PZth5Xxp14kb9K%2BcdqMVPdltgGfmjR5OY8gEi1ARAV7mibmfWj7lq54rPJx0wiWoNJ0jZHAyMMsto875iTPw%3D%3D";
 
-        Call<Repos> reposCall = service.listRepos(key, "JSON", "20210530", "0500", "58", "125" );
+        Call<Repos> reposCall = service.listRepos(key, "JSON", "20210614", "0500", "58", "125" );
 
         reposCall.enqueue(new Callback<Repos>() {
             @Override
