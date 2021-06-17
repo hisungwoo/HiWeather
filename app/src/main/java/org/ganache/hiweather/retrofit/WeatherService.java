@@ -18,7 +18,7 @@ public interface WeatherService {
                             @Path("nx") String nx,
                             @Path("ny") String ny);
 
-    @GET("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=E6PZth5Xxp14kb9K%2BcdqMVPdltgGfmjR5OY8gEi1ARAV7mibmfWj7lq54rPJx0wiWoNJ0jZHAyMMsto875iTPw%3D%3D&numOfRows=100&pageNo=1&dataType=JSON&base_date=20210614&base_time=0500&nx=58&ny=125")
+    @GET("http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst?serviceKey=E6PZth5Xxp14kb9K%2BcdqMVPdltgGfmjR5OY8gEi1ARAV7mibmfWj7lq54rPJx0wiWoNJ0jZHAyMMsto875iTPw%3D%3D&numOfRows=100&pageNo=1&dataType=JSON&base_date=20210617&base_time=0500&nx=58&ny=125")
     Call<Example> listRepos2();
 
 }
