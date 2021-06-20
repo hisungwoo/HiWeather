@@ -16,6 +16,8 @@ import org.ganache.hiweather.model.Example;
 import org.ganache.hiweather.model.Repos;
 import org.ganache.hiweather.retrofit.WeatherService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,11 +36,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("info", "start");
+        long now = System.currentTimeMillis();
+        Date mDate = new Date(now);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMdd");
+        String nowTime = simpleDate.format(mDate);
+
+        Log.d("debug", "nowTime = " + nowTime);
+
+
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Log.i("info", "퍼미션 허용");
                 Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
             }
 
@@ -56,23 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        Log.i("info", "gogo222");
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        Log.i("info" , "석세스로 옴");
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Log.i("info" , "getLatitude = " + location.getLatitude());
-                            Log.i("info" , "getLongitude = " + location.getLongitude());
-
-                            Log.i("info", "2");
-                            // Logic to handle location object
+                            Log.d("debug", "getLatitude = " + location.getLatitude());
+                            Log.d("debug", "getLongitude = " + location.getLongitude());
                         }
                     }
                 }).addOnFailureListener(this, e->{
-                    Log.i("test" , "error =" + e.getCause());
+                    Log.d("debug" , "error =" + e.getCause());
                 });
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -81,31 +84,29 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         WeatherService service = retrofit.create(WeatherService.class);
-        String key = "E6PZth5Xxp14kb9K%2BcdqMVPdltgGfmjR5OY8gEi1ARAV7mibmfWj7lq54rPJx0wiWoNJ0jZHAyMMsto875iTPw%3D%3D";
-
-        Call<Example> reposCall = service.listRepos2();
-
+        Call<Example> reposCall = service.listRepos("JSON", "20210620","2000","58", "125");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if(response.isSuccessful()) {
-                    System.out.println("성공");
+                    Log.d("debug", "레트로핏 성공");
                     Example test = response.body();
-                    System.out.println(test.toString());
-                    System.out.println(test.getResponse().getBody().getTotalCount());
+
+                    Log.d("debug", "toString = " + test.toString());
+                    Log.d("debug", "getTotalCount = " + test.getResponse().getBody().getTotalCount());
 
 
                     //성공
                 } else {
-                    System.out.println("실패");
+                    Log.d("debug", "레트로핏 실패");
                     //실패
                 }
             }
 
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
-                //예외, 인터넷 끊김 등 시스템적인 이유 실패
-                System.out.println("2");
+                Log.d("debug", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
+                Log.d("debug", t.toString());
             }
 
         });
