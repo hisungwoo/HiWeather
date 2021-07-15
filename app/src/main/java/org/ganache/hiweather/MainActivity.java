@@ -4,6 +4,7 @@ import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -13,6 +14,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.ganache.hiweather.model.Example;
+import org.ganache.hiweather.model.Item;
 import org.ganache.hiweather.model.Repos;
 import org.ganache.hiweather.retrofit.WeatherService;
 
@@ -29,19 +31,60 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FusedLocationProviderClient fusedLocationClient;
+    private String weather_state  = "";
+    private String temperature = "";
+    private String pop = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FusedLocationProviderClient fusedLocationClient;
+        TextView weather_state_tv = findViewById(R.id.weather_state);
+        TextView temperature_tv = findViewById(R.id.temperature);
+        TextView pop_tv = findViewById(R.id.pop);
+
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
-        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMdd");
-        String nowTime = simpleDate.format(mDate);
+        SimpleDateFormat dayDate = new SimpleDateFormat("yyyyMMdd");
+        String nowDay = dayDate.format(mDate);
+
+        SimpleDateFormat timeDate = new SimpleDateFormat("HHmm");
+        String dateTime = timeDate.format(mDate);
+
+        Log.d("debug", "nowDay = " + nowDay);
+        Log.d("debug", "dateTime = " + dateTime);
+
+        int nowTimeInt = Integer.parseInt(dateTime);
+
+        Log.d("debug", "nowTimeInt = " + nowTimeInt);
+        //0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
+
+        String nowTime = "";
+        if (nowTimeInt < 200) {
+            // nowDay -1
+            // 2300
+        } else if (nowTimeInt >= 200 && nowTimeInt < 500) {
+            nowTime = "0200";
+        } else if (nowTimeInt >= 500 && nowTimeInt < 800) {
+            nowTime = "0500";
+        } else if (nowTimeInt >= 800 && nowTimeInt < 1100) {
+            nowTime = "0800";
+        } else if (nowTimeInt >= 1100 && nowTimeInt < 1400) {
+            nowTime = "1100";
+        } else if (nowTimeInt >= 1400 && nowTimeInt < 1700) {
+            nowTime = "1400";
+        } else if (nowTimeInt >= 1700 && nowTimeInt < 2000) {
+            nowTime = "1700";
+        } else if (nowTimeInt >= 2000 && nowTimeInt < 2300) {
+            nowTime = "2000";
+        } else if (nowTimeInt >= 2300) {
+            nowTime = "2300";
+        }
 
         Log.d("debug", "nowTime = " + nowTime);
+
 
 
         PermissionListener permissionlistener = new PermissionListener() {
@@ -84,19 +127,61 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         WeatherService service = retrofit.create(WeatherService.class);
-        Call<Example> reposCall = service.listRepos("JSON", "20210620","2000","58", "125");
+        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime,"58", "125");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if(response.isSuccessful()) {
                     Log.d("debug", "레트로핏 성공");
-                    Example test = response.body();
 
-                    Log.d("debug", "toString = " + test.toString());
-                    Log.d("debug", "getTotalCount = " + test.getResponse().getBody().getTotalCount());
+                    if (response.body().getResponse() != null) {
+                        List<Item> items = response.body().getResponse().getBody().getItems().getItem();
+
+                        Log.d("debug", "getFcstTime2 = " + items.get(0).getCategory());
+                        Log.d("debug", "getFcstTime2 = " + items.get(0).getFcstTime());
+                        Log.d("debug", "getFcstValue2 = " + items.get(0).getFcstValue());
+
+                        for (int i = 0 ; i < items.size() ; i++) {
+                            if (items.get(i).getCategory().equals("PTY")) {
+                                // 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+                                switch (items.get(i).getFcstValue()) {
+                                    case "0" : weather_state = "없음";
+                                        break;
+                                    case "1" : weather_state = "비";
+                                        break;
+                                    case "2" : weather_state = "비/눈";
+                                        break;
+                                    case "3" : weather_state = "눈";
+                                        break;
+                                    case "4" : weather_state = "소나기";
+                                        break;
+                                    case "5" : weather_state = "빗방울";
+                                        break;
+                                    case "6" : weather_state = "빗방울/눈날림";
+                                        break;
+                                    case "7" : weather_state = "눈날림";
+                                        break;
+                                    default : weather_state = "알수없음";
+                                        break;
+                                }
+                            } else if (items.get(i).getCategory().equals("T3H")) {
+                                temperature = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("POP")) {
+                                pop = items.get(i).getFcstValue();
+                            }
+                        }
+
+                        weather_state_tv.setText(weather_state);
+                        temperature_tv.setText(temperature);
+                        pop_tv.setText(pop);
+
+                        Log.d("debug", "weather_state = " + weather_state);
+                        Log.d("debug", "temperature = " + temperature);
+                        Log.d("debug", "pop = " + pop);
+
+                    }
 
 
-                    //성공
                 } else {
                     Log.d("debug", "레트로핏 실패");
                     //실패
@@ -110,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+
+
+
 
 
 
