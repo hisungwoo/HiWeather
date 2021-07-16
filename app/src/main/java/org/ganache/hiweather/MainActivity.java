@@ -136,11 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if (response.body().getResponse() != null) {
                         List<Item> items = response.body().getResponse().getBody().getItems().getItem();
-
-                        Log.d("debug", "getFcstTime2 = " + items.get(0).getCategory());
-                        Log.d("debug", "getFcstTime2 = " + items.get(0).getFcstTime());
-                        Log.d("debug", "getFcstValue2 = " + items.get(0).getFcstValue());
-
                         for (int i = 0 ; i < items.size() ; i++) {
                             if (items.get(i).getCategory().equals("PTY")) {
                                 // 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
@@ -172,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         weather_state_tv.setText(weather_state);
-                        temperature_tv.setText(temperature);
+                        temperature_tv.setText(temperature + "℃");
                         pop_tv.setText(pop);
 
-                        Log.d("debug", "weather_state = " + weather_state);
-                        Log.d("debug", "temperature = " + temperature);
-                        Log.d("debug", "pop = " + pop);
+                        Log.d("debug", "강수형태 = " + weather_state);
+                        Log.d("debug", "기온 = " + temperature);
+                        Log.d("debug", "강수확률 = " + pop);
 
                     }
 
