@@ -15,7 +15,6 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.ganache.hiweather.model.Example;
 import org.ganache.hiweather.model.Item;
-import org.ganache.hiweather.model.Repos;
 import org.ganache.hiweather.retrofit.WeatherService;
 
 import java.text.SimpleDateFormat;
@@ -31,9 +30,13 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String weather_state  = "";
-    private String temperature = "";
+    private String pty  = "";
+    private String sky  = "";
+    private String t3h = "";
     private String pop = "";
+    private String wsd = "";
+    private String r06 = "";
+    private String reh = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +44,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FusedLocationProviderClient fusedLocationClient;
-        TextView weather_state_tv = findViewById(R.id.weather_state);
-        TextView temperature_tv = findViewById(R.id.temperature);
+        TextView weather_tv = findViewById(R.id.weather);
+        TextView t3h_tv = findViewById(R.id.t3h);
         TextView pop_tv = findViewById(R.id.pop);
+        TextView wsd_tv = findViewById(R.id.wsd);
+        TextView reh_tv = findViewById(R.id.reh);
+        TextView r06_tv = findViewById(R.id.r06);
 
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
@@ -138,41 +144,67 @@ public class MainActivity extends AppCompatActivity {
                         List<Item> items = response.body().getResponse().getBody().getItems().getItem();
                         for (int i = 0 ; i < items.size() ; i++) {
                             if (items.get(i).getCategory().equals("PTY")) {
-                                // 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+                                //강수형태 :  없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
                                 switch (items.get(i).getFcstValue()) {
-                                    case "0" : weather_state = "없음";
+                                    case "0" : pty = "없음";
                                         break;
-                                    case "1" : weather_state = "비";
+                                    case "1" : pty = "비";
                                         break;
-                                    case "2" : weather_state = "비/눈";
+                                    case "2" : pty = "비/눈";
                                         break;
-                                    case "3" : weather_state = "눈";
+                                    case "3" : pty = "눈";
                                         break;
-                                    case "4" : weather_state = "소나기";
+                                    case "4" : pty = "소나기";
                                         break;
-                                    case "5" : weather_state = "빗방울";
+                                    case "5" : pty = "빗방울";
                                         break;
-                                    case "6" : weather_state = "빗방울/눈날림";
+                                    case "6" : pty = "빗방울/눈날림";
                                         break;
-                                    case "7" : weather_state = "눈날림";
+                                    case "7" : pty = "눈날림";
                                         break;
-                                    default : weather_state = "알수없음";
+                                    default : pty = "알수없음";
                                         break;
                                 }
+                            } else if (items.get(i).getCategory().equals("SKY")) {
+                                // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
+                                sky = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("T3H")) {
-                                temperature = items.get(i).getFcstValue();
+                                // 3시간 기온
+                                t3h = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("POP")) {
+                                // 강수확률
                                 pop = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("WSD")) {
+                                // 풍속
+                                wsd = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("REH")) {
+                                // 습도
+                                reh = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("R06")) {
+                                // 강수량
+                                r06 = items.get(i).getFcstValue();
                             }
                         }
 
-                        weather_state_tv.setText(weather_state);
-                        temperature_tv.setText(temperature + "℃");
-                        pop_tv.setText(pop);
+                        if (pty.equals("없음")) {
+                            weather_tv.setText(sky);
+                        } else {
+                            weather_tv.setText(pty);
+                        }
 
-                        Log.d("debug", "강수형태 = " + weather_state);
-                        Log.d("debug", "기온 = " + temperature);
-                        Log.d("debug", "강수확률 = " + pop);
+                        weather_tv.setText(pty);
+                        t3h_tv.setText(t3h + "℃");
+                        pop_tv.setText(pop + "%");
+                        wsd_tv.setText(wsd + "m/s");
+                        reh_tv.setText(reh + "%");
+                        r06_tv.setText(pop + "mm");
+
+                        Log.d("debug", "강수형태 = " + pty);
+                        Log.d("debug", "기온 = " + t3h + "℃");
+                        Log.d("debug", "강수확률 = " + pop + "%");
+                        Log.d("debug", "풍속 = " + wsd + "m/s");
+                        Log.d("debug", "습도 = " + reh + "%");
+                        Log.d("debug", "강수량 = " + pop + "mm");
 
                     }
 
