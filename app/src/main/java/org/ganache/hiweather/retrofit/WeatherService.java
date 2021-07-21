@@ -16,6 +16,7 @@ public interface WeatherService {
                              @Query("base_date") String base_date,
                              @Query("base_time") String base_time,
                              @Query("nx") String nx,
-                             @Query("ny") String ny);
+                             @Query("ny") String ny,
+                             @Query("numOfRows") String numOfRows);
 
 }

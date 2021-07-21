@@ -16,7 +16,7 @@ public class Item {
     @com.squareup.moshi.Json(name = "fcstTime")
     private String fcstTime;
     @com.squareup.moshi.Json(name = "fcstValue")
-    private String fcstValue;
+    private float fcstValue;
     @com.squareup.moshi.Json(name = "nx")
     private int nx;
     @com.squareup.moshi.Json(name = "ny")
@@ -62,11 +62,11 @@ public class Item {
         this.fcstTime = fcstTime;
     }
 
-    public String getFcstValue() {
+    public float getFcstValue() {
         return fcstValue;
     }
 
-    public void setFcstValue(String fcstValue) {
+    public void setFcstValue(float fcstValue) {
         this.fcstValue = fcstValue;
     }
 
