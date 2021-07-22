@@ -14,16 +14,20 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import org.ganache.hiweather.adapter.WeatherAdapter;
 import org.ganache.hiweather.model.Example;
 import org.ganache.hiweather.model.Item;
 import org.ganache.hiweather.model.LatXLngY;
 import org.ganache.hiweather.retrofit.WeatherService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -149,6 +153,33 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+        WeatherAdapter adapter = new WeatherAdapter();
+        recyclerView.setAdapter(adapter);
+
+        List<Item> test = new ArrayList<>();
+
+        Item dd = new Item();
+        dd.setBaseTime("11시");
+        dd.setCategory("29℃");
+
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+        test.add(dd);
+
+        adapter.updateItems(test);
+
 
     }
 
@@ -158,78 +189,90 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
-
-
         WeatherService service = retrofit.create(WeatherService.class);
-        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "100");
+        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "250");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if(response.isSuccessful()) {
                     Log.d("debug_test", "레트로핏 성공");
 
-                    if (response.body().getResponse() != null) {
+
+                    if (response.body() != null && response.body().getResponse() != null) {
                         List<Item> items = response.body().getResponse().getBody().getItems().getItem();
-                        String fcDate = items.get(0).getFcstDate();
-                        String fcTime = items.get(0).getBaseTime();
+                        String nowFcDate = items.get(0).getFcstDate();
+                        String nowFcTime = items.get(0).getFcstTime();
 
-                        Log.d("fcDate", "fcDate = " + fcDate);
-                        Log.d("fcTime", "fcTime = " + fcTime);
+                        Log.d("nowFcDate", "nowFcDate = " + nowFcDate);
+                        Log.d("nowFcTime", "nowFcTime = " + nowFcTime);
 
-                        for (int i = 0 ; i < items.size() ; i++) {
-                            if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                        for (int i = 0; i < items.size(); i++) {
+                            if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 //강수형태 :  없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
                                 switch (String.valueOf(Math.round(items.get(i).getFcstValue()))) {
-                                    case "0" : pty = "없음";
+                                    case "0":
+                                        pty = "없음";
                                         break;
-                                    case "1" : pty = "비";
+                                    case "1":
+                                        pty = "비";
                                         break;
-                                    case "2" : pty = "비/눈";
+                                    case "2":
+                                        pty = "비/눈";
                                         break;
-                                    case "3" : pty = "눈";
+                                    case "3":
+                                        pty = "눈";
                                         break;
-                                    case "4" : pty = "소나기";
+                                    case "4":
+                                        pty = "소나기";
                                         break;
-                                    case "5" : pty = "빗방울";
+                                    case "5":
+                                        pty = "빗방울";
                                         break;
-                                    case "6" : pty = "빗방울/눈날림";
+                                    case "6":
+                                        pty = "빗방울/눈날림";
                                         break;
-                                    case "7" : pty = "눈날림";
+                                    case "7":
+                                        pty = "눈날림";
                                         break;
-                                    default : pty = "알수없음";
+                                    default:
+                                        pty = "알수없음";
                                         break;
                                 }
-                            } else if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
                                 sky = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 3시간 기온
                                 t3h = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("POP") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("POP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수확률
                                 pop = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("WSD") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("WSD") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 풍속
                                 wsd = items.get(i).getFcstValue();
-                            } else if (items.get(i).getCategory().equals("REH") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("REH") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 습도
                                 reh = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowDay) && items.get(i).getFcstTime().equals(fcTime)) {
+                            } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수량
                                 r06 = String.valueOf(Math.round(items.get(i).getFcstValue()));
                             }
                         }
 
-                        if (pty == "없음") {
+                        if (pty.equals("없음")) {
                             // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
-                            switch(sky) {
-                                case "1" : sky = "맑음";
+                            switch (sky) {
+                                case "1":
+                                    sky = "맑음";
                                     break;
-                                case "3" : sky = "구름많음";
+                                case "3":
+                                    sky = "구름많음";
                                     break;
-                                case "4" : sky = "흐림";
+                                case "4":
+                                    sky = "흐림";
                                     break;
-                                default : sky = pty;
+                                default:
+                                    sky = pty;
                                     break;
                             }
 

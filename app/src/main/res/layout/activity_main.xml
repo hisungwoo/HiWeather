@@ -71,40 +71,40 @@
         android:layout_marginTop="25dp"
         android:text="습도"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintTop_toBottomOf="@+id/line"
         app:layout_constraintEnd_toStartOf="@+id/pop_title"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <TextView
         android:id="@+id/pop_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="강수확률"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintTop_toTopOf="@+id/reh_title"
         app:layout_constraintEnd_toStartOf="@+id/r06_title"
         app:layout_constraintStart_toEndOf="@+id/reh_title"
-        android:text="강수확률" />
+        app:layout_constraintTop_toTopOf="@+id/reh_title" />
 
     <TextView
         android:id="@+id/r06_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="강수량"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintTop_toTopOf="@+id/reh_title"
         app:layout_constraintEnd_toStartOf="@id/wsd_title"
         app:layout_constraintStart_toEndOf="@+id/pop_title"
-        android:text="강수량" />
+        app:layout_constraintTop_toTopOf="@+id/reh_title" />
 
     <TextView
         android:id="@+id/wsd_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="풍속"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintTop_toTopOf="@id/reh_title"
-        app:layout_constraintStart_toEndOf="@id/r06_title"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="풍속" />
+        app:layout_constraintStart_toEndOf="@id/r06_title"
+        app:layout_constraintTop_toTopOf="@id/reh_title" />
 
     <TextView
         android:id="@+id/reh"
@@ -142,6 +142,15 @@
         app:layout_constraintStart_toStartOf="@+id/wsd_title"
         app:layout_constraintEnd_toEndOf="@+id/wsd_title"
         tools:text="풍속" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reh" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
