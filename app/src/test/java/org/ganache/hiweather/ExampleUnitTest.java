@@ -8,6 +8,11 @@ import org.ganache.hiweather.retrofit.WeatherService;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,11 +37,34 @@ public class ExampleUnitTest {
     @Test
     public void apiTest() throws IOException {
 
-        Double x = 58.0;
-        Double y = 125.0;
 
-        String result = String.format("%.0f", x);
-        System.out.println("x = " + result);
+        List<String> test = new ArrayList<>();
+        test.add("0000");
+        test.add("0000");
+        test.add("0000");
+        test.add("0300");
+        test.add("0600");
+        test.add("0900");
+        test.add("1200");
+        test.add("1500");
+        test.add("1800");
+        test.add("2100");
+        test.add("0000");
+        test.add("0000");
+
+        List<String> result = new ArrayList<>();
+
+        LinkedHashSet<String> linked = new LinkedHashSet<>();
+
+        for(int i = 0 ; i < test.size(); i++) {
+            System.out.println(test.get(i));
+            linked.add(test.get(i));
+        }
+
+
+        System.out.println("linked = " + linked);
+
+
 
 
 

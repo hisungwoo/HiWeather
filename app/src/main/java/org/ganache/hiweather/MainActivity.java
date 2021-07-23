@@ -23,7 +23,10 @@ import org.ganache.hiweather.retrofit.WeatherService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -183,6 +186,136 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    private void retrofitGo() {
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(WeatherService.BASE_URL)
+//                .addConverterFactory(MoshiConverterFactory.create())
+//                .build();
+//
+//        WeatherService service = retrofit.create(WeatherService.class);
+//        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "250");
+//        reposCall.enqueue(new Callback<Example>() {
+//            @Override
+//            public void onResponse(Call<Example> call, Response<Example> response) {
+//                if(response.isSuccessful()) {
+//                    Log.d("debug_test", "레트로핏 성공");
+//
+//
+//                    if (response.body() != null && response.body().getResponse() != null) {
+//                        List<Item> items = response.body().getResponse().getBody().getItems().getItem();
+//                        String nowFcDate = items.get(0).getFcstDate();
+//                        String nowFcTime = items.get(0).getFcstTime();
+//
+//                        Log.d("nowFcDate", "nowFcDate = " + nowFcDate);
+//                        Log.d("nowFcTime", "nowFcTime = " + nowFcTime);
+//
+//                        for (int i = 0; i < items.size(); i++) {
+//                            if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                //강수형태 :  없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+//                                switch (String.valueOf(Math.round(items.get(i).getFcstValue()))) {
+//                                    case "0":
+//                                        pty = "없음";
+//                                        break;
+//                                    case "1":
+//                                        pty = "비";
+//                                        break;
+//                                    case "2":
+//                                        pty = "비/눈";
+//                                        break;
+//                                    case "3":
+//                                        pty = "눈";
+//                                        break;
+//                                    case "4":
+//                                        pty = "소나기";
+//                                        break;
+//                                    case "5":
+//                                        pty = "빗방울";
+//                                        break;
+//                                    case "6":
+//                                        pty = "빗방울/눈날림";
+//                                        break;
+//                                    case "7":
+//                                        pty = "눈날림";
+//                                        break;
+//                                    default:
+//                                        pty = "알수없음";
+//                                        break;
+//                                }
+//                            } else if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
+//                                sky = String.valueOf(Math.round(items.get(i).getFcstValue()));
+//                            } else if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 3시간 기온
+//                                t3h = String.valueOf(Math.round(items.get(i).getFcstValue()));
+//                            } else if (items.get(i).getCategory().equals("POP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 강수확률
+//                                pop = String.valueOf(Math.round(items.get(i).getFcstValue()));
+//                            } else if (items.get(i).getCategory().equals("WSD") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 풍속
+//                                wsd = items.get(i).getFcstValue();
+//                            } else if (items.get(i).getCategory().equals("REH") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 습도
+//                                reh = String.valueOf(Math.round(items.get(i).getFcstValue()));
+//                            } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+//                                // 강수량
+//                                r06 = String.valueOf(Math.round(items.get(i).getFcstValue()));
+//                            }
+//                        }
+//
+//                        if (pty.equals("없음")) {
+//                            // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
+//                            switch (sky) {
+//                                case "1":
+//                                    sky = "맑음";
+//                                    break;
+//                                case "3":
+//                                    sky = "구름많음";
+//                                    break;
+//                                case "4":
+//                                    sky = "흐림";
+//                                    break;
+//                                default:
+//                                    sky = pty;
+//                                    break;
+//                            }
+//
+//                            weather_tv.setText(sky);
+//                        } else {
+//                            weather_tv.setText(pty);
+//                        }
+//
+//                        t3h_tv.setText(t3h + "℃");
+//                        pop_tv.setText(pop + "%");
+//                        wsd_tv.setText(wsd + "m/s");
+//                        reh_tv.setText(reh + "%");
+//                        r06_tv.setText(r06 + "mm");
+//
+//                        Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
+//                        Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
+//                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + "℃");
+//                        Log.d("debug_test", ">>>>>>> 강수확률(POP) = " + pop + "%");
+//                        Log.d("debug_test", ">>>>>>> 풍속(WSD) = " + wsd + "m/s");
+//                        Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
+//                        Log.d("debug_test", ">>>>>>> 강수량(R06) = " + r06 + "mm");
+//
+//                    }
+//
+//
+//                } else {
+//                    Log.d("debug_test", "레트로핏 실패");
+//                    //실패
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Example> call, Throwable t) {
+//                Log.d("debug_test", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
+//                Log.d("debug_test", t.toString());
+//            }
+//
+//        });
+//    }
+
     private void retrofitGo() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(WeatherService.BASE_URL)
@@ -200,11 +333,37 @@ public class MainActivity extends AppCompatActivity {
 
                     if (response.body() != null && response.body().getResponse() != null) {
                         List<Item> items = response.body().getResponse().getBody().getItems().getItem();
+
+                        LinkedHashSet days = new LinkedHashSet();
+                        LinkedHashSet times = new LinkedHashSet();
+
+                        for (int i = 0 ; i < items.size() ; i++) {
+                            days.add(items.get(i).getFcstDate());
+                            times.add(items.get(i).getFcstTime());
+                        }
+
+                        Iterator<String> daysIter = days.iterator();
+                        Iterator<String> timesIter = days.iterator();
+
+//                        while(daysIter.hasNext()) {
+//                            Log.d("debug_test", "days = " + daysIter.next());
+//                        }
+//
+//                        while(timesIter.hasNext()) {
+//                            Log.d("debug_test", "times = " + timesIter.next());
+//                        }
+
+                        Log.d("debug_test", "days = " + days);
+                        Log.d("debug_test", "times = " + times);
+
+
+
+
                         String nowFcDate = items.get(0).getFcstDate();
                         String nowFcTime = items.get(0).getFcstTime();
 
-                        Log.d("nowFcDate", "nowFcDate = " + nowFcDate);
-                        Log.d("nowFcTime", "nowFcTime = " + nowFcTime);
+                        Log.d("debug_test", "nowFcDate = " + nowFcDate);
+                        Log.d("debug_test", "nowFcTime = " + nowFcTime);
 
                         for (int i = 0; i < items.size(); i++) {
                             if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
