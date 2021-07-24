@@ -345,13 +345,13 @@ public class MainActivity extends AppCompatActivity {
                         Iterator<String> daysIter = days.iterator();
                         Iterator<String> timesIter = days.iterator();
 
-//                        while(daysIter.hasNext()) {
-//                            Log.d("debug_test", "days = " + daysIter.next());
-//                        }
-//
-//                        while(timesIter.hasNext()) {
-//                            Log.d("debug_test", "times = " + timesIter.next());
-//                        }
+                        while(daysIter.hasNext()) {
+                            Log.d("debug_test", "days = " + daysIter.next());
+                        }
+
+                        while(timesIter.hasNext()) {
+                            Log.d("debug_test", "times = " + timesIter.next());
+                        }
 
                         Log.d("debug_test", "days = " + days);
                         Log.d("debug_test", "times = " + times);
