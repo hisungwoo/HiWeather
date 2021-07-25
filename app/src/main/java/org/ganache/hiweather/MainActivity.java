@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         WeatherService service = retrofit.create(WeatherService.class);
-        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "250");
+        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
@@ -342,21 +342,48 @@ public class MainActivity extends AppCompatActivity {
                             times.add(items.get(i).getFcstTime());
                         }
 
-                        Iterator<String> daysIter = days.iterator();
-                        Iterator<String> timesIter = days.iterator();
+                        List<String> dayList = new ArrayList<>();
+                        List<String> timeList = new ArrayList<>();
 
-                        while(daysIter.hasNext()) {
-                            Log.d("debug_test", "days = " + daysIter.next());
+                        dayList.addAll(days);
+                        timeList.addAll(times);
+
+                        Log.d("debug_test", "dayList = " + dayList.toString());
+                        Log.d("debug_test", "timeList = " + timeList.toString());
+
+                        String getDay = dayList.get(0);
+                        List<String> ptyDataList = new ArrayList<>();
+                        List<String> skyDataList = new ArrayList<>();
+                        List<String> t3hDataList = new ArrayList<>();
+
+
+                        for (int i = 0; i < items.size(); i++) {
+
+                            for(int j = 0 ; j < 7 ; j++) {
+                                if (j != 0 && timeList.get(j).equals("0000")) {
+                                    getDay = dayList.get(1);
+                                }
+
+                                if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    ptyDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                }
+
+                                if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    skyDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                }
+
+                                if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    t3hDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                }
+                            }
                         }
 
-                        while(timesIter.hasNext()) {
-                            Log.d("debug_test", "times = " + timesIter.next());
-                        }
-
-                        Log.d("debug_test", "days = " + days);
-                        Log.d("debug_test", "times = " + times);
+                        Log.d("debug_test", "############# ptyDataList = " + ptyDataList);
+                        Log.d("debug_test", "############# skyDataList = " + skyDataList);
+                        Log.d("debug_test", "############# t3hDataList = " + t3hDataList);
 
 
+                        
 
 
                         String nowFcDate = items.get(0).getFcstDate();
@@ -364,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("debug_test", "nowFcDate = " + nowFcDate);
                         Log.d("debug_test", "nowFcTime = " + nowFcTime);
+
 
                         for (int i = 0; i < items.size(); i++) {
                             if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
