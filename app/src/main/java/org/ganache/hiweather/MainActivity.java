@@ -18,6 +18,7 @@ import org.ganache.hiweather.adapter.WeatherAdapter;
 import org.ganache.hiweather.model.Example;
 import org.ganache.hiweather.model.Item;
 import org.ganache.hiweather.model.LatXLngY;
+import org.ganache.hiweather.model.TomorrowWeather;
 import org.ganache.hiweather.retrofit.WeatherService;
 
 import java.text.SimpleDateFormat;
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     TextView reh_tv;
     TextView r06_tv;
 
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         wsd_tv = findViewById(R.id.wsd);
         reh_tv = findViewById(R.id.reh);
         r06_tv = findViewById(R.id.r06);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
@@ -154,35 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(this, e->{
                     Log.d("debug_test" , "error =" + e.getCause());
                 });
-
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
-        WeatherAdapter adapter = new WeatherAdapter();
-        recyclerView.setAdapter(adapter);
-
-        List<Item> test = new ArrayList<>();
-
-        Item dd = new Item();
-        dd.setBaseTime("11시");
-        dd.setCategory("29℃");
-
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-        test.add(dd);
-
-        adapter.updateItems(test);
-
 
     }
 
@@ -356,9 +333,7 @@ public class MainActivity extends AppCompatActivity {
                         List<String> skyDataList = new ArrayList<>();
                         List<String> t3hDataList = new ArrayList<>();
 
-
                         for (int i = 0; i < items.size(); i++) {
-
                             for(int j = 0 ; j < 7 ; j++) {
                                 if (j != 0 && timeList.get(j).equals("0000")) {
                                     getDay = dayList.get(1);
@@ -382,8 +357,23 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", "############# skyDataList = " + skyDataList);
                         Log.d("debug_test", "############# t3hDataList = " + t3hDataList);
 
+                        WeatherAdapter adapter = new WeatherAdapter();
+                        recyclerView.setAdapter(adapter);
 
-                        
+                        List<TomorrowWeather> weatherItems = new ArrayList<>();
+
+                        String toDay = dayList.get(0);
+                        for (int i=0; i<7 ;i++) {
+                            TomorrowWeather item = new TomorrowWeather();
+                            if (!(nowDay.equals(toDay)))
+                                item.setDay("내일");
+
+                            item.setTime((timeList.get(i).substring(0 , 2)) + "시");
+                            item.setTomoT3h(t3hDataList.get(i) + "℃");
+                            weatherItems.add(item);
+                        }
+
+                        adapter.updateItems(weatherItems);
 
 
                         String nowFcDate = items.get(0).getFcstDate();
