@@ -1,6 +1,7 @@
 package org.ganache.hiweather;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -40,8 +43,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String pty  = "";
-    private String sky  = "";
+    private String pty = "";
+    private String sky = "";
     private String t3h = "";
     private String pop = "";
     private float wsd = 0;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     String nowTime = "";
     String nowDay = "";
+
 
     LatXLngY gridXy;
 
@@ -130,19 +134,24 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setRationaleMessage("앱을 사용하기 위해서는 위치 권한이 필요합니다.")
+                .setDeniedMessage("위치 권한이 없으면 앱을 실행할 수 없습니다. \n [설정] > [권한] 에서 권한을 허용할 수 있습니다.")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .setGotoSettingButton(true)
                 .check();
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        Log.d("debug_test", "???? = ");
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             Log.d("debug_test", "getLatitude = " + location.getLatitude());
@@ -157,10 +166,9 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
-                }).addOnFailureListener(this, e->{
-                    Log.d("debug_test" , "error =" + e.getCause());
-                });
-
+                }).addOnFailureListener(this, e -> {
+            Log.d("debug_test", "error =" + e.getCause());
+        });
     }
 
 //    private void retrofitGo() {
