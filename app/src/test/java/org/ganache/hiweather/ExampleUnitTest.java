@@ -1,24 +1,11 @@
 package org.ganache.hiweather;
 
-import android.util.Log;
-
-import org.ganache.hiweather.model.Example;
-import org.ganache.hiweather.model.Repos;
-import org.ganache.hiweather.retrofit.WeatherService;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.junit.Assert.*;
 

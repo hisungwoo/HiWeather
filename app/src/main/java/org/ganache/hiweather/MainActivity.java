@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,19 +19,16 @@ import org.ganache.hiweather.model.Example;
 import org.ganache.hiweather.model.Item;
 import org.ganache.hiweather.model.LatXLngY;
 import org.ganache.hiweather.model.TomorrowWeather;
-import org.ganache.hiweather.retrofit.WeatherService;
+import org.ganache.hiweather.retrofit.WeatherRetrofit;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -91,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
         String dateTime = timeDate.format(mDate);
 
         Log.d("debug_test", "nowDay = " + nowDay);
-        Log.d("debug_test", "dateTime = " + dateTime);
+//        Log.d("debug_test", "dateTime = " + dateTime);
 
         int nowTimeInt = Integer.parseInt(dateTime);
 
-        Log.d("debug_test", "nowTimeInt = " + nowTimeInt);
+//        Log.d("debug_test", "nowTimeInt = " + nowTimeInt);
         //0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
 
         if (nowTimeInt < 200) {
@@ -125,12 +121,12 @@ public class MainActivity extends AppCompatActivity {
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "위치 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "위치 권한이 거부되었습니다.\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -151,19 +147,17 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        Log.d("debug_test", "???? = ");
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            Log.d("debug_test", "getLatitude = " + location.getLatitude());
-                            Log.d("debug_test", "getLongitude = " + location.getLongitude());
-
                             locationChange locChange = new locationChange();
                             gridXy = locChange.convertGRID_GPS(0, location.getLatitude(), location.getLongitude());
                             Log.d("debug_test", "x = " + gridXy.x);
                             Log.d("debug_test", "y = " + gridXy.y);
 
-                            retrofitGo();
+                            getTownWeather();
 
+                        } else {
+                            Log.d("debug_test", "####### location null #######");
                         }
                     }
                 }).addOnFailureListener(this, e -> {
@@ -171,144 +165,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void retrofitGo() {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(WeatherService.BASE_URL)
-//                .addConverterFactory(MoshiConverterFactory.create())
-//                .build();
-//
-//        WeatherService service = retrofit.create(WeatherService.class);
-//        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "250");
-//        reposCall.enqueue(new Callback<Example>() {
-//            @Override
-//            public void onResponse(Call<Example> call, Response<Example> response) {
-//                if(response.isSuccessful()) {
-//                    Log.d("debug_test", "레트로핏 성공");
-//
-//
-//                    if (response.body() != null && response.body().getResponse() != null) {
-//                        List<Item> items = response.body().getResponse().getBody().getItems().getItem();
-//                        String nowFcDate = items.get(0).getFcstDate();
-//                        String nowFcTime = items.get(0).getFcstTime();
-//
-//                        Log.d("nowFcDate", "nowFcDate = " + nowFcDate);
-//                        Log.d("nowFcTime", "nowFcTime = " + nowFcTime);
-//
-//                        for (int i = 0; i < items.size(); i++) {
-//                            if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                //강수형태 :  없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
-//                                switch (String.valueOf(Math.round(items.get(i).getFcstValue()))) {
-//                                    case "0":
-//                                        pty = "없음";
-//                                        break;
-//                                    case "1":
-//                                        pty = "비";
-//                                        break;
-//                                    case "2":
-//                                        pty = "비/눈";
-//                                        break;
-//                                    case "3":
-//                                        pty = "눈";
-//                                        break;
-//                                    case "4":
-//                                        pty = "소나기";
-//                                        break;
-//                                    case "5":
-//                                        pty = "빗방울";
-//                                        break;
-//                                    case "6":
-//                                        pty = "빗방울/눈날림";
-//                                        break;
-//                                    case "7":
-//                                        pty = "눈날림";
-//                                        break;
-//                                    default:
-//                                        pty = "알수없음";
-//                                        break;
-//                                }
-//                            } else if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
-//                                sky = String.valueOf(Math.round(items.get(i).getFcstValue()));
-//                            } else if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 3시간 기온
-//                                t3h = String.valueOf(Math.round(items.get(i).getFcstValue()));
-//                            } else if (items.get(i).getCategory().equals("POP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 강수확률
-//                                pop = String.valueOf(Math.round(items.get(i).getFcstValue()));
-//                            } else if (items.get(i).getCategory().equals("WSD") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 풍속
-//                                wsd = items.get(i).getFcstValue();
-//                            } else if (items.get(i).getCategory().equals("REH") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 습도
-//                                reh = String.valueOf(Math.round(items.get(i).getFcstValue()));
-//                            } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-//                                // 강수량
-//                                r06 = String.valueOf(Math.round(items.get(i).getFcstValue()));
-//                            }
-//                        }
-//
-//                        if (pty.equals("없음")) {
-//                            // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
-//                            switch (sky) {
-//                                case "1":
-//                                    sky = "맑음";
-//                                    break;
-//                                case "3":
-//                                    sky = "구름많음";
-//                                    break;
-//                                case "4":
-//                                    sky = "흐림";
-//                                    break;
-//                                default:
-//                                    sky = pty;
-//                                    break;
-//                            }
-//
-//                            weather_tv.setText(sky);
-//                        } else {
-//                            weather_tv.setText(pty);
-//                        }
-//
-//                        t3h_tv.setText(t3h + "℃");
-//                        pop_tv.setText(pop + "%");
-//                        wsd_tv.setText(wsd + "m/s");
-//                        reh_tv.setText(reh + "%");
-//                        r06_tv.setText(r06 + "mm");
-//
-//                        Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
-//                        Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
-//                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + "℃");
-//                        Log.d("debug_test", ">>>>>>> 강수확률(POP) = " + pop + "%");
-//                        Log.d("debug_test", ">>>>>>> 풍속(WSD) = " + wsd + "m/s");
-//                        Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
-//                        Log.d("debug_test", ">>>>>>> 강수량(R06) = " + r06 + "mm");
-//
-//                    }
-//
-//
-//                } else {
-//                    Log.d("debug_test", "레트로핏 실패");
-//                    //실패
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Example> call, Throwable t) {
-//                Log.d("debug_test", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
-//                Log.d("debug_test", t.toString());
-//            }
-//
-//        });
-//    }
 
-    private void retrofitGo() {
+    private void getTownWeather() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(WeatherService.BASE_URL)
+                .baseUrl(WeatherRetrofit.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
-        WeatherService service = retrofit.create(WeatherService.class);
-        Call<Example> reposCall = service.listRepos("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
+        WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
+        Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
@@ -470,6 +335,8 @@ public class MainActivity extends AppCompatActivity {
                         pop_tv.setText(pop + "%");
                         wsd_tv.setText(wsd + "m/s");
                         reh_tv.setText(reh + "%");
+
+                        r06 = r06.equals("") ? "0" : r06;
                         r06_tv.setText(r06 + "mm");
 
                         Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
