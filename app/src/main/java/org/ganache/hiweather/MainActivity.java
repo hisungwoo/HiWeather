@@ -28,9 +28,11 @@ import org.ganache.hiweather.retrofit.WeatherRetrofit;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -101,14 +103,26 @@ public class MainActivity extends AppCompatActivity {
         String dateTime = timeDate.format(mDate);
 
         Log.d("debug_test", "nowDay = " + nowDay);
-//        Log.d("debug_test", "dateTime = " + dateTime);
+        Log.d("debug_test", "dateTime = " + dateTime);
 
         int nowTimeInt = Integer.parseInt(dateTime);
 
-//        Log.d("debug_test", "nowTimeInt = " + nowTimeInt);
+        Log.d("debug_test", "nowTimeInt = " + nowTimeInt);
         //0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
 
+
+
+
         if (nowTimeInt < 200) {
+            SimpleDateFormat ytDayFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+
+            String ytDay = ytDayFormat.format(calendar.getTime());
+            Log.d("debug_test", "ytDay = " + ytDay);
+            nowDay = ytDay;
+            nowTime = "2300";
+
             // nowDay -1
             // 2300
         } else if (nowTimeInt >= 200 && nowTimeInt < 500) {
