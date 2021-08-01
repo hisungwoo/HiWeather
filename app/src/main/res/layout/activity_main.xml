@@ -8,26 +8,26 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="현재위치" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="@id/t3h"
+        app:layout_constraintStart_toStartOf="@+id/t3h"
+        app:layout_constraintTop_toBottomOf="@+id/t3h"
+        android:layout_marginTop="5dp"
+        tools:text="주소" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="80dp"
         android:contentDescription="@string/non_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/sunny" />
 
     <TextView
@@ -42,16 +42,16 @@
         tools:text="날씨" />
 
 
-
     <TextView
         android:id="@+id/t3h"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/textView2"
-        app:layout_constraintStart_toEndOf="@id/imageView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.3"
         tools:text="온도" />
 
     <View
@@ -59,9 +59,10 @@
         android:layout_width="0dp"
         android:layout_height="0.25dp"
         android:layout_marginTop="25dp"
+        android:layout_marginHorizontal="30dp"
         android:background="#4682B4"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weather" />
 
     <TextView
@@ -69,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="습도"
+        android:text="@string/reh_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/pop_title"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -80,7 +81,7 @@
         android:id="@+id/pop_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="강수확률"
+        android:text="@string/pop_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/r06_title"
         app:layout_constraintStart_toEndOf="@+id/reh_title"
@@ -90,7 +91,7 @@
         android:id="@+id/r06_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="강수량"
+        android:text="@string/r06_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/wsd_title"
         app:layout_constraintStart_toEndOf="@+id/pop_title"
@@ -100,7 +101,7 @@
         android:id="@+id/wsd_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="풍속"
+        android:text="@string/wsd_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/r06_title"
@@ -147,6 +148,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

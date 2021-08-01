@@ -2,9 +2,13 @@ package org.ganache.hiweather;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import org.ganache.hiweather.model.LatXLngY;
 import org.ganache.hiweather.model.TomorrowWeather;
 import org.ganache.hiweather.retrofit.WeatherRetrofit;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
     TextView wsd_tv;
     TextView reh_tv;
     TextView r06_tv;
+    TextView location_tv;
+
+    double latitude = 0;
+    double longitude = 0;
 
     RecyclerView recyclerView;
 
@@ -67,13 +76,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FusedLocationProviderClient fusedLocationClient;
+        Window dd = getWindow();
+        dd.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        FusedLocationProviderClient fusedLocationClient = null;
         weather_tv = findViewById(R.id.weather);
         t3h_tv = findViewById(R.id.t3h);
         pop_tv = findViewById(R.id.pop);
         wsd_tv = findViewById(R.id.wsd);
         reh_tv = findViewById(R.id.reh);
         r06_tv = findViewById(R.id.r06);
+        location_tv = findViewById(R.id.location);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -139,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 .check();
 
 
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -150,7 +165,11 @@ public class MainActivity extends AppCompatActivity {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             locationChange locChange = new locationChange();
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+
                             gridXy = locChange.convertGRID_GPS(0, location.getLatitude(), location.getLongitude());
+
                             Log.d("debug_test", "x = " + gridXy.x);
                             Log.d("debug_test", "y = " + gridXy.y);
 
@@ -347,6 +366,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
                         Log.d("debug_test", ">>>>>>> 강수량(R06) = " + r06 + "mm");
 
+                        getMyLocation(latitude, longitude);
+
                     }
 
 
@@ -363,6 +384,34 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    void getMyLocation(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> gList = null;
+        try {
+            gList = geocoder.getFromLocation(latitude, longitude,5);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("debug_test", "getFromLocation 실패 : " + e.getMessage());
+        }
+        if (gList != null) {
+            if (gList.size() == 0) {
+                Log.d("debug_test", "현재위치에서 검색된 주소정보가 없습니다.");
+
+            } else {
+                Address address = gList.get(0);
+                String sido = address.getAdminArea();
+                String gugun = address.getSubLocality();
+
+                Log.d("debug_test", "sido = " + sido);
+                Log.d("debug_test", "gugun = " + gugun);
+
+                location_tv.setText(sido + " " + gugun);
+
+            }
+        }
     }
 
 }
