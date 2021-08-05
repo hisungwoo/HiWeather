@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     String nowDay = "";
 
 
+    
+
     LatXLngY gridXy;
 
     TextView weather_tv;

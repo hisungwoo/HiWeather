@@ -19,3 +19,4 @@ public interface WeatherRetrofit {
                              @Query("ny") String ny,
                              @Query("numOfRows") String numOfRows);
 }
+
