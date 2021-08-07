@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     String nowDay = "";
 
 
-    
+
 
     LatXLngY gridXy;
 
@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                     //실패
                 }
             }
-
+  
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
                 Log.d("debug_test", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
