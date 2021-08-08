@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
     String nowTime = "";
     String nowDay = "";
 
-
-
-
     LatXLngY gridXy;
 
     TextView weather_tv;
@@ -69,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     TextView reh_tv;
     TextView r06_tv;
     TextView location_tv;
+
+    ImageView weatherImgView;
 
     double latitude = 0;
     double longitude = 0;
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         reh_tv = findViewById(R.id.reh);
         r06_tv = findViewById(R.id.r06);
         location_tv = findViewById(R.id.location);
+
+        weatherImgView = findViewById(R.id.imageView);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -277,12 +279,29 @@ public class MainActivity extends AppCompatActivity {
                                 item.setDay("내일");
 
                             item.setTime((timeList.get(i).substring(0 , 2)) + "시");
-                            item.setTomoT3h(t3hDataList.get(i) + "℃");
+                            item.setTomoT3h(t3hDataList.get(i) + " ˚");
+
+                            if (ptyDataList.get(i).equals("0")) {
+                                if (skyDataList.get(i).equals("1"))
+                                    item.setWeather("맑음");
+                                else if (skyDataList.get(i).equals("3"))
+                                    item.setWeather("구름많음");
+                                else if (skyDataList.get(i).equals("4"))
+                                    item.setWeather("흐림");
+
+                            } else {
+                                // 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+                                if (ptyDataList.get(i).equals("1") || ptyDataList.get(i).equals("2"))
+                                    item.setWeather("비");
+                                else if (ptyDataList.get(i).equals("3") || ptyDataList.get(i).equals("6") || ptyDataList.get(i).equals("7"))
+                                    item.setWeather("눈");
+                                else if (ptyDataList.get(i).equals("4") || ptyDataList.get(i).equals("5"))
+                                    item.setWeather("소나기");
+                            }
                             weatherItems.add(item);
                         }
 
                         adapter.updateItems(weatherItems);
-
 
                         String nowFcDate = items.get(0).getFcstDate();
                         String nowFcTime = items.get(0).getFcstTime();
@@ -300,24 +319,31 @@ public class MainActivity extends AppCompatActivity {
                                         break;
                                     case "1":
                                         pty = "비";
+                                        weatherImgView.setImageResource(R.drawable.rain);
                                         break;
                                     case "2":
                                         pty = "비/눈";
+                                        weatherImgView.setImageResource(R.drawable.rain);
                                         break;
                                     case "3":
                                         pty = "눈";
+                                        weatherImgView.setImageResource(R.drawable.snow);
                                         break;
                                     case "4":
                                         pty = "소나기";
+                                        weatherImgView.setImageResource(R.drawable.shower);
                                         break;
                                     case "5":
                                         pty = "빗방울";
+                                        weatherImgView.setImageResource(R.drawable.shower);
                                         break;
                                     case "6":
                                         pty = "빗방울/눈날림";
+                                        weatherImgView.setImageResource(R.drawable.shower);
                                         break;
                                     case "7":
                                         pty = "눈날림";
+                                        weatherImgView.setImageResource(R.drawable.snow);
                                         break;
                                     default:
                                         pty = "알수없음";
@@ -349,12 +375,15 @@ public class MainActivity extends AppCompatActivity {
                             switch (sky) {
                                 case "1":
                                     sky = "맑음";
+                                    weatherImgView.setImageResource(R.drawable.sunny);
                                     break;
                                 case "3":
                                     sky = "구름많음";
+                                    weatherImgView.setImageResource(R.drawable.cloudy);
                                     break;
                                 case "4":
                                     sky = "흐림";
+                                    weatherImgView.setImageResource(R.drawable.murky);
                                     break;
                                 default:
                                     sky = pty;
@@ -362,11 +391,13 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             weather_tv.setText(sky);
+
+
                         } else {
                             weather_tv.setText(pty);
                         }
 
-                        t3h_tv.setText(t3h + "℃");
+                        t3h_tv.setText(t3h + " ˚");
                         pop_tv.setText(pop + "%");
                         wsd_tv.setText(wsd + "m/s");
                         reh_tv.setText(reh + "%");
@@ -374,9 +405,10 @@ public class MainActivity extends AppCompatActivity {
                         r06 = r06.equals("") ? "0" : r06;
                         r06_tv.setText(r06 + "mm");
 
+
                         Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
                         Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
-                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + "℃");
+                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + " ˚");
                         Log.d("debug_test", ">>>>>>> 강수확률(POP) = " + pop + "%");
                         Log.d("debug_test", ">>>>>>> 풍속(WSD) = " + wsd + "m/s");
                         Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
@@ -392,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
                     //실패
                 }
             }
-  
+
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
                 Log.d("debug_test", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
@@ -430,9 +462,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
 }
-
-
 
 
 
