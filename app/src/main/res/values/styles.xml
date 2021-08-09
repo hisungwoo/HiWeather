@@ -6,6 +6,32 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="WeatherText">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:shadowColor">#575656</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">3.0</item>
+        <item name="android:shadowRadius">10.0</item>
+    </style>
+
+    <style name="TitleStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#E1E0E0</item>
+        <item name="android:shadowColor">#656565</item>
+        <item name="android:shadowDx">5.0</item>
+        <item name="android:shadowDy">5.0</item>
+        <item name="android:shadowRadius">8.0</item>
+    </style>
+
+    <style name="shadow">
+        <item name="android:shadowColor">#717171</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">3.0</item>
+        <item name="android:shadowRadius">10.0</item>
     </style>
 
 </resources>

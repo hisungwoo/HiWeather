@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colortest2"
+    android:background="@color/colortest1"
     tools:context=".MainActivity">
 
 
@@ -12,18 +12,19 @@
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="@id/t3h"
         app:layout_constraintStart_toStartOf="@+id/t3h"
         app:layout_constraintTop_toBottomOf="@+id/t3h"
+        style="@style/shadow"
         tools:text="주소" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:contentDescription="@string/non_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +36,12 @@
 
     <TextView
         android:id="@+id/weather"
+        style="@style/shadow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@android:color/darker_gray"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="@id/imageView"
         app:layout_constraintStart_toStartOf="@id/imageView"
         app:layout_constraintTop_toBottomOf="@id/imageView"
@@ -57,6 +59,7 @@
         app:layout_constraintStart_toEndOf="@id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.4"
+        style="@style/shadow"
         tools:text="온도" />
 
     <View
@@ -70,54 +73,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weather" />
 
-
-    <TextView
-        android:id="@+id/reh_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/reh_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/reh_icon"
-        app:layout_constraintStart_toStartOf="@+id/reh_icon"
-        app:layout_constraintTop_toBottomOf="@+id/reh_icon" />
-
-    <TextView
-        android:id="@+id/pop_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pop_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/pop_icon"
-        app:layout_constraintStart_toStartOf="@+id/pop_icon"
-        app:layout_constraintTop_toTopOf="@+id/reh_title" />
-
-    <TextView
-        android:id="@+id/r06_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/r06_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/r06_icon"
-        app:layout_constraintStart_toStartOf="@+id/r06_icon"
-        app:layout_constraintTop_toTopOf="@+id/reh_title" />
-
-    <TextView
-        android:id="@+id/wsd_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wsd_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/wsd_icon"
-        app:layout_constraintStart_toStartOf="@+id/wsd_icon"
-        app:layout_constraintTop_toTopOf="@+id/reh_title" />
-
     <ImageView
         android:id="@+id/reh_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/non_image"
         android:src="@drawable/reh"
@@ -128,8 +89,8 @@
 
     <ImageView
         android:id="@+id/pop_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/non_image"
@@ -140,8 +101,8 @@
 
     <ImageView
         android:id="@+id/r06_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/non_image"
@@ -152,8 +113,8 @@
 
     <ImageView
         android:id="@+id/wsd_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/non_image"
@@ -165,58 +126,112 @@
 
     <TextView
         android:id="@+id/reh"
+        style="@style/WeatherText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintEnd_toEndOf="@+id/reh_title"
-        app:layout_constraintStart_toStartOf="@id/reh_title"
-        app:layout_constraintTop_toBottomOf="@+id/reh_title"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="@+id/reh_icon"
+        app:layout_constraintStart_toStartOf="@+id/reh_icon"
+        app:layout_constraintTop_toBottomOf="@+id/reh_icon"
         tools:text="습도" />
 
     <TextView
         android:id="@+id/pop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/reh"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintStart_toStartOf="@+id/pop_title"
-        app:layout_constraintEnd_toEndOf="@+id/pop_title"
-        tools:text="강수확률" />
+        tools:text="강수확률"
+        style="@style/WeatherText"
+        app:layout_constraintEnd_toEndOf="@+id/pop_icon"
+        app:layout_constraintStart_toStartOf="@+id/pop_icon"
+        app:layout_constraintTop_toTopOf="@+id/reh" />
 
     <TextView
         android:id="@+id/r06"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintTop_toTopOf="@+id/reh"
-        app:layout_constraintStart_toStartOf="@+id/r06_title"
-        app:layout_constraintEnd_toEndOf="@+id/r06_title"
-        tools:text="강수량" />
+        tools:text="강수량"
+        style="@style/WeatherText"
+        app:layout_constraintEnd_toEndOf="@+id/r06_icon"
+        app:layout_constraintStart_toStartOf="@+id/r06_icon"
+        app:layout_constraintTop_toTopOf="@+id/reh" />
 
     <TextView
         android:id="@+id/wsd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintTop_toTopOf="@id/reh"
-        app:layout_constraintStart_toStartOf="@+id/wsd_title"
-        app:layout_constraintEnd_toEndOf="@+id/wsd_title"
-        tools:text="풍속" />
+        tools:text="풍속"
+        style="@style/WeatherText"
+        app:layout_constraintEnd_toEndOf="@+id/wsd_icon"
+        app:layout_constraintStart_toStartOf="@+id/wsd_icon"
+        app:layout_constraintTop_toTopOf="@+id/reh" />
+
+
+    <TextView
+        android:id="@+id/reh_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/reh_title"
+        style="@style/TitleStyle"
+        app:layout_constraintEnd_toEndOf="@+id/reh"
+        app:layout_constraintStart_toStartOf="@id/reh"
+        app:layout_constraintTop_toBottomOf="@+id/reh" />
+
+    <TextView
+        android:id="@+id/pop_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pop_title"
+        style="@style/TitleStyle"
+        app:layout_constraintTop_toTopOf="@+id/reh_title"
+        app:layout_constraintStart_toStartOf="@+id/pop"
+        app:layout_constraintEnd_toEndOf="@+id/pop" />
+
+    <TextView
+        android:id="@+id/r06_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/r06_title"
+        style="@style/TitleStyle"
+        app:layout_constraintTop_toTopOf="@+id/reh_title"
+        app:layout_constraintStart_toStartOf="@+id/r06"
+        app:layout_constraintEnd_toEndOf="@+id/r06" />
+
+    <TextView
+        android:id="@+id/wsd_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wsd_title"
+        style="@style/TitleStyle"
+        app:layout_constraintTop_toTopOf="@id/reh_title"
+        app:layout_constraintStart_toStartOf="@+id/wsd"
+        app:layout_constraintEnd_toEndOf="@+id/wsd" />
+
+    <View
+        android:id="@+id/box"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reh_title"
+        app:layout_constraintVertical_bias="1.0" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reh" />
-
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/box"
+        app:layout_constraintEnd_toEndOf="@+id/box"
+        app:layout_constraintStart_toStartOf="@+id/box"
+        app:layout_constraintTop_toTopOf="@+id/box" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
