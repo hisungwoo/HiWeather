@@ -223,15 +223,91 @@
         app:layout_constraintVertical_bias="1.0" />
 
 
+    <ImageView
+        android:id="@+id/ht_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ht"
+        app:layout_constraintTop_toTopOf="@+id/box"
+        app:layout_constraintLeft_toLeftOf="@id/box"
+        app:layout_constraintRight_toRightOf="@+id/box"
+        app:layout_constraintHorizontal_bias="0.3"
+        />
+
+    <TextView
+        android:id="@+id/ht_val_tv"
+        style="@style/itemValStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ht_img"
+        app:layout_constraintStart_toStartOf="@id/ht_img"
+        app:layout_constraintEnd_toEndOf="@id/ht_img"
+        tools:text=" 30˚" />
+
+
+    <TextView
+        android:id="@+id/ht_title"
+        style="@style/itemTitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="최고 기온"
+        app:layout_constraintTop_toBottomOf="@id/ht_val_tv"
+        app:layout_constraintStart_toStartOf="@id/ht_val_tv"
+        app:layout_constraintEnd_toEndOf="@+id/ht_val_tv"
+        tools:text="최고 기온" />
+
+
+    <ImageView
+        android:id="@+id/mt_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/mt"
+        app:layout_constraintTop_toTopOf="@+id/ht_img"
+        app:layout_constraintLeft_toLeftOf="@id/box"
+        app:layout_constraintRight_toRightOf="@id/box"
+        app:layout_constraintHorizontal_bias="0.7"
+        />
+
+    <TextView
+        android:id="@+id/mt_val_tv"
+        style="@style/itemValStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/mt_img"
+        app:layout_constraintStart_toStartOf="@id/mt_img"
+        app:layout_constraintEnd_toEndOf="@id/mt_img"
+        tools:text=" 22˚" />
+
+    <TextView
+        android:id="@+id/mt_title"
+        style="@style/itemTitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="최저 기온"
+        app:layout_constraintTop_toBottomOf="@id/mt_val_tv"
+        app:layout_constraintStart_toStartOf="@id/mt_val_tv"
+        app:layout_constraintEnd_toEndOf="@+id/mt_val_tv"
+        tools:text="최저 기온" />
+
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="@id/box"
         app:layout_constraintEnd_toEndOf="@+id/box"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/box"
-        app:layout_constraintTop_toTopOf="@+id/box" />
+        app:layout_constraintTop_toBottomOf="@+id/ht_title"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

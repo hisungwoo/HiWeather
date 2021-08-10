@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private float wsd = 0;
     private String r06 = "";
     private String reh = "";
+    private String tmx = "";
+    private String tmn = "";
 
     String nowTime = "";
     String nowDay = "";
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     TextView reh_tv;
     TextView r06_tv;
     TextView location_tv;
+
+    TextView ht_val_tv;
+    TextView mt_val_tv;
 
     ImageView weatherImgView;
 
@@ -92,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         reh_tv = findViewById(R.id.reh);
         r06_tv = findViewById(R.id.r06);
         location_tv = findViewById(R.id.location);
+
+        ht_val_tv = findViewById(R.id.ht_val_tv);
+        mt_val_tv = findViewById(R.id.mt_val_tv);
 
         weatherImgView = findViewById(R.id.imageView);
 
@@ -244,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                         List<String> t3hDataList = new ArrayList<>();
 
                         for (int i = 0; i < items.size(); i++) {
-                            for(int j = 0 ; j < 7 ; j++) {
+                            for(int j = 0 ; j < 8 ; j++) {
                                 if (j != 0 && timeList.get(j).equals("0000")) {
                                     getDay = dayList.get(1);
                                 }
@@ -275,11 +283,14 @@ public class MainActivity extends AppCompatActivity {
                         String toDay = dayList.get(0);
                         for (int i=0; i<7 ;i++) {
                             TomorrowWeather item = new TomorrowWeather();
-                            if (!(nowDay.equals(toDay)))
+                            if (nowDay.equals(toDay))
+                                item.setDay("오늘");
+                            else
                                 item.setDay("내일");
 
+
                             item.setTime((timeList.get(i).substring(0 , 2)) + "시");
-                            item.setTomoT3h(t3hDataList.get(i) + " ˚");
+                            item.setTomoT3h(" " + t3hDataList.get(i) + "˚");
 
                             if (ptyDataList.get(i).equals("0")) {
                                 if (skyDataList.get(i).equals("1"))
@@ -367,6 +378,12 @@ public class MainActivity extends AppCompatActivity {
                             } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수량
                                 r06 = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                            } else if (items.get(i).getCategory().equals("TMX") && items.get(i).getFcstDate().equals(nowFcDate)) {
+                                // 낮 최고온도
+                                tmx = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                            } else if (items.get(i).getCategory().equals("TMN") && items.get(i).getFcstDate().equals(nowFcDate)) {
+                                // 낮 최고온도
+                                tmn = String.valueOf(Math.round(items.get(i).getFcstValue()));
                             }
                         }
 
@@ -397,10 +414,12 @@ public class MainActivity extends AppCompatActivity {
                             weather_tv.setText(pty);
                         }
 
-                        t3h_tv.setText(t3h + " ˚");
+                        t3h_tv.setText(" " + t3h + "˚");
                         pop_tv.setText(pop + "%");
                         wsd_tv.setText(wsd + "m/s");
                         reh_tv.setText(reh + "%");
+                        ht_val_tv.setText(" " + tmx + "˚");
+                        mt_val_tv.setText(" " + tmn + "˚");
 
                         r06 = r06.equals("") ? "0" : r06;
                         r06_tv.setText(r06 + "mm");
@@ -408,11 +427,13 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
                         Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
-                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + " ˚");
+                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + "˚");
                         Log.d("debug_test", ">>>>>>> 강수확률(POP) = " + pop + "%");
                         Log.d("debug_test", ">>>>>>> 풍속(WSD) = " + wsd + "m/s");
                         Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
                         Log.d("debug_test", ">>>>>>> 강수량(R06) = " + r06 + "mm");
+                        Log.d("debug_test", ">>>>>>> 최고온도(TMX) = " + tmx + "˚");
+                        Log.d("debug_test", ">>>>>>> 최저온도(TMN) = " + tmn + "˚");
 
                         getMyLocation(latitude, longitude);
 
