@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,20 +76,33 @@ public class MainActivity extends AppCompatActivity {
     TextView mt_val_tv;
 
     ImageView weatherImgView;
+    ImageView rehImgView;
+    ImageView popImgView;
+    ImageView r06ImgView;
+    ImageView wsdImgView;
+    ImageView htImgView;
+    ImageView mtImgView;
 
     double latitude = 0;
     double longitude = 0;
 
     RecyclerView recyclerView;
 
+    Animation scaleAnim;
+    Animation rotateAnim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Window dd = getWindow();
-        dd.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        // status bar 투명
+        Window win = getWindow();
+        win.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
+        rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
 
         FusedLocationProviderClient fusedLocationClient = null;
         weather_tv = findViewById(R.id.weather);
@@ -102,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
         mt_val_tv = findViewById(R.id.mt_val_tv);
 
         weatherImgView = findViewById(R.id.imageView);
+        rehImgView = findViewById(R.id.reh_icon);
+        popImgView = findViewById(R.id.pop_icon);
+        r06ImgView = findViewById(R.id.r06_icon);
+        wsdImgView = findViewById(R.id.wsd_icon);
+        htImgView = findViewById(R.id.ht_img);
+        mtImgView = findViewById(R.id.mt_img);
+
+
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -200,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("debug_test", "y = " + gridXy.y);
 
                             getTownWeather();
-
                         } else {
                             Log.d("debug_test", "####### location null #######");
                         }
@@ -208,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(this, e -> {
             Log.d("debug_test", "error =" + e.getCause());
         });
+
+
+
     }
 
 
@@ -435,8 +460,15 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", ">>>>>>> 최고온도(TMX) = " + tmx + "˚");
                         Log.d("debug_test", ">>>>>>> 최저온도(TMN) = " + tmn + "˚");
 
-                        getMyLocation(latitude, longitude);
+                        weatherImgView.startAnimation(rotateAnim);
+                        rehImgView.startAnimation(scaleAnim);
+                        popImgView.startAnimation(scaleAnim);
+                        r06ImgView.startAnimation(scaleAnim);
+                        wsdImgView.startAnimation(scaleAnim);
+                        htImgView.startAnimation(scaleAnim);
+                        mtImgView.startAnimation(scaleAnim);
 
+                        getMyLocation(latitude, longitude);
                     }
 
 
