@@ -4,6 +4,16 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorSunny">#3F80B1</color>
-    <color name="colortest1">#6CA7BA</color>
-    <color name="colortest2">#13285E</color>
+<!--    <color name="colortest1">#6CA7BA</color>-->
+<!--    <color name="colortest2">#13285E</color>-->
+
+    <color name="colorMorningBack">#288CD2</color>
+    <color name="colorMorningStatus">#DF3296D7</color>
+
+    <color name="colorAfterBack">#6CA1BA</color>
+    <color name="colorAfterStatus">#A36CA1BA</color>
+
+    <color name="colorEveningBack">#3C5087</color>
+    <color name="colorEveningStatus">#DA3C5A91</color>
+
 </resources>

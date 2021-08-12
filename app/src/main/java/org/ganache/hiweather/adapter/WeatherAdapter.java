@@ -83,5 +83,3 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         return items.size();
     }
 }
-
-
