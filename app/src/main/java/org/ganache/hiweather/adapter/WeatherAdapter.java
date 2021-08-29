@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder> {
     private List<TomorrowWeather> items = new ArrayList<>();
 
-
     // 아이템 뷰 정보를 가지고 있는 클래스
     static class WeatherViewHolder extends RecyclerView.ViewHolder {
         private TextView itemTimeView;
@@ -83,3 +82,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         return items.size();
     }
 }
+
+
+
+
+
+
+
+
+
+
