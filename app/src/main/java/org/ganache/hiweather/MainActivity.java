@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPermissionGranted() {
                 Toast.makeText(MainActivity.this, "위치 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
+                startApp();
             }
 
             @Override
@@ -193,42 +195,42 @@ public class MainActivity extends AppCompatActivity {
             nowTime = "2300";
             // nowDay -1
             // 2300
-        } else if (nowTimeInt >= 200 && nowTimeInt < 500) {
+        } else if (nowTimeInt < 500) {
             nowTime = "0200";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
-        } else if (nowTimeInt >= 500 && nowTimeInt < 800) {
+        } else if (nowTimeInt < 800) {
             nowTime = "0500";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorMorningBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
-        } else if (nowTimeInt >= 800 && nowTimeInt < 1100) {
+        } else if (nowTimeInt < 1100) {
             nowTime = "0800";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorMorningBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
-        } else if (nowTimeInt >= 1100 && nowTimeInt < 1400) {
+        } else if (nowTimeInt < 1400) {
             nowTime = "1100";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
-        } else if (nowTimeInt >= 1400 && nowTimeInt < 1700) {
+        } else if (nowTimeInt < 1700) {
             nowTime = "1400";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
-        } else if (nowTimeInt >= 1700 && nowTimeInt < 2000) {
+        } else if (nowTimeInt < 2000) {
             nowTime = "1700";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
-        } else if (nowTimeInt >= 2000 && nowTimeInt < 2300) {
+        } else if (nowTimeInt < 2300) {
             nowTime = "2000";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
             if (Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
-        } else if (nowTimeInt >= 2300) {
+        } else {
             nowTime = "2300";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
             if (Build.VERSION.SDK_INT >= 21)
@@ -260,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
                             getWeather();
                         } else {
                             Log.d("debug_test", "####### location null #######");
+                            startApp();
                         }
                     }
                 }).addOnFailureListener(this, e -> {
