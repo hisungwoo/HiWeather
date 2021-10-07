@@ -1,16 +1,16 @@
 package org.ganache.hiweather;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.gun0912.tedpermission.PermissionListener;
@@ -165,6 +168,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        // GPS 프로바이더 사용가능여부
+        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 네트워크 프로바이더 사용가능여부
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Log.d("debug_test", "gps 프로바이더 = " + isGPSEnabled);
+        Log.d("debug_test", "네트워크 = " + isNetworkEnabled);
+
+
+
     }
 
     private void startApp() {
@@ -244,8 +260,10 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
@@ -260,16 +278,37 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("debug_test", "y = " + gridXy.y);
 
                             getWeather();
+
                         } else {
-                            Log.d("debug_test", "####### location null #######");
-                            startApp();
+                            Log.d("debug_test", "############ location null ############");
+
+                            LocationRequest request = LocationRequest.create()
+                                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                    .setInterval(100)
+                                    .setFastestInterval(200);
+
+                            LocationCallback locationCallback = new LocationCallback() {
+                                @Override
+                                public void onLocationResult(LocationResult locationResult) {
+                                    if (locationResult == null) {
+                                        return;
+                                    }
+                                    for (Location location : locationResult.getLocations()) {
+                                        Log.d("debug_test", "location.getLatitude = " + location.getLatitude());
+                                        Log.d("debug_test", "location.getLongitude = " + location.getLongitude());
+                                        fusedLocationClient.removeLocationUpdates(this);
+                                        startApp();
+                                    }
+                                }
+                            };
+                            fusedLocationClient.requestLocationUpdates(request, locationCallback, null);
+
                         }
                     }
                 }).addOnFailureListener(this, e -> {
             Log.d("debug_test", "error =" + e.getCause());
         });
     }
-
 
     private void getWeather() {
         Retrofit retrofit = new Retrofit.Builder()
