@@ -2,18 +2,18 @@ package org.ganache.hiweather;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +42,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -90,13 +91,17 @@ public class MainActivity extends AppCompatActivity {
     ImageView htImgView;
     ImageView mtImgView;
 
+    ProgressBar progressBar;
+
     double latitude = 0;
     double longitude = 0;
 
     RecyclerView recyclerView;
 
     Animation scaleAnim;
+    Animation scaleAnim_s;
     Animation rotateAnim;
+    Animation rotateAnim_s;
 
     SwipeRefreshLayout swipeLayout;
     ConstraintLayout constLayout;
@@ -110,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         scaleAnim = AnimationUtils.loadAnimation(this, R.anim.scale);
+        scaleAnim_s = AnimationUtils.loadAnimation(this, R.anim.scale_s);
         rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        rotateAnim_s = AnimationUtils.loadAnimation(this, R.anim.rotate_s);
 
         weather_tv = findViewById(R.id.weather);
         t3h_tv = findViewById(R.id.t3h);
@@ -137,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
+        progressBar = findViewById(R.id.progressBar);
+
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -160,36 +169,29 @@ public class MainActivity extends AppCompatActivity {
 
         startApp();
 
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                startApp();
-                swipeLayout.setRefreshing(false);
-            }
+        swipeLayout.setOnRefreshListener(() -> {
+            progressBar.setVisibility(View.VISIBLE);
+            startApp();
+            swipeLayout.setRefreshing(false);
         });
 
-
-
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // GPS 프로바이더 사용가능여부
-        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // 네트워크 프로바이더 사용가능여부
-        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        Log.d("debug_test", "gps 프로바이더 = " + isGPSEnabled);
-        Log.d("debug_test", "네트워크 = " + isNetworkEnabled);
-
-
-
+//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//        // GPS 프로바이더 사용가능여부
+//        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        // 네트워크 프로바이더 사용가능여부
+//        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//
+//        Log.d("debug_test", "gps 프로바이더 = " + isGPSEnabled);
+//        Log.d("debug_test", "네트워크 = " + isNetworkEnabled);
     }
 
     private void startApp() {
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
-        SimpleDateFormat dayDate = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat dayDate = new SimpleDateFormat("yyyyMMdd", java.util.Locale.getDefault());
         nowDay = dayDate.format(mDate);
 
-        SimpleDateFormat timeDate = new SimpleDateFormat("HHmm");
+        SimpleDateFormat timeDate = new SimpleDateFormat("HHmm", java.util.Locale.getDefault());
         String dateTime = timeDate.format(mDate);
 
         Log.d("debug_test", "nowDay = " + nowDay);
@@ -289,10 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
                             LocationCallback locationCallback = new LocationCallback() {
                                 @Override
-                                public void onLocationResult(LocationResult locationResult) {
-                                    if (locationResult == null) {
-                                        return;
-                                    }
+                                public void onLocationResult(@NonNull LocationResult locationResult) {
                                     for (Location location : locationResult.getLocations()) {
                                         Log.d("debug_test", "location.getLatitude = " + location.getLatitude());
                                         Log.d("debug_test", "location.getLongitude = " + location.getLongitude());
@@ -320,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
         reposCall.enqueue(new Callback<Example>() {
             @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
+            public void onResponse(@NonNull Call<Example> call, @NonNull Response<Example> response) {
                 if(response.isSuccessful()) {
                     Log.d("debug_test", "레트로핏 성공");
 
@@ -395,11 +394,11 @@ public class MainActivity extends AppCompatActivity {
                             item.setTomoT3h(" " + t3hDataList.get(i) + "˚");
 
                             if (ptyDataList.get(i).equals("0")) {
-                                if (skyDataList.get(i).equals("1"))
+                                if (skyDataList.get(i).equals("1")) {
                                     item.setWeather("맑음");
-                                else if (skyDataList.get(i).equals("3"))
+                                } else if (skyDataList.get(i).equals("3")) {
                                     item.setWeather("구름많음");
-                                else if (skyDataList.get(i).equals("4"))
+                                } else if (skyDataList.get(i).equals("4"))
                                     item.setWeather("흐림");
 
                             } else {
@@ -528,15 +527,17 @@ public class MainActivity extends AppCompatActivity {
                             weather_tv.setText(pty);
                         }
 
-                        t3h_tv.setText(" " + t3h + "˚");
-                        pop_tv.setText(pop + "%");
-                        wsd_tv.setText(wsd + "m/s");
-                        reh_tv.setText(reh + "%");
-                        ht_val_tv.setText(" " + tmx + "˚");
-                        mt_val_tv.setText(" " + tmn + "˚");
+                        t3h_tv.setText(getString(R.string.weather_string, " " + t3h, "˚"));
+                        pop_tv.setText(getString(R.string.weather_string, " " + pop, "%"));
+                        wsd_tv.setText(getString(R.string.weather_string, String.valueOf(wsd), "m/s"));
+                        reh_tv.setText(getString(R.string.weather_string, " " + reh , "%"));
+                        ht_val_tv.setText(getString(R.string.weather_string," " + tmx, "˚"));
+                        mt_val_tv.setText(getString(R.string.weather_string," " + tmn, "˚"));
 
                         r06 = r06.equals("") ? "0" : r06;
-                        r06_tv.setText(r06 + "mm");
+                        r06_tv.setText(getString(R.string.weather_string, r06, "mm"));
+
+                        getMyLocation(latitude, longitude);
 
                         Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
                         Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
@@ -549,14 +550,14 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", ">>>>>>> 최저온도(TMN) = " + tmn + "˚");
 
                         weatherImgView.startAnimation(rotateAnim);
+                        t3h_tv.startAnimation(scaleAnim_s);
                         rehImgView.startAnimation(scaleAnim);
                         popImgView.startAnimation(scaleAnim);
                         r06ImgView.startAnimation(scaleAnim);
                         wsdImgView.startAnimation(scaleAnim);
                         htImgView.startAnimation(scaleAnim);
                         mtImgView.startAnimation(scaleAnim);
-
-                        getMyLocation(latitude, longitude);
+                        progressBar.setVisibility(View.GONE);
                     }
 
 
@@ -567,7 +568,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Example> call, Throwable t) {
+            public void onFailure(@NonNull Call<Example> call, @NonNull Throwable t) {
                 Log.d("debug_test", "레트로핏 예외, 인터넷 끊김 등 시스템적인 이유 실패");
                 Log.d("debug_test", t.toString());
             }
@@ -597,7 +598,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("debug_test", "sido = " + sido);
                 Log.d("debug_test", "gugun = " + gugun);
 
-                location_tv.setText(sido + " " + gugun);
+                location_tv.setText(getString(R.string.weather_string, sido + " " , gugun));
 
             }
         }

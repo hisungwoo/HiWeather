@@ -1,7 +1,6 @@
 package org.ganache.hiweather;
 
 
-import android.util.Log;
 
 import org.ganache.hiweather.model.LatXLngY;
 
@@ -10,7 +9,7 @@ import java.util.Locale;
 public class locationChange {
 
     public static int TO_GRID = 0;
-    public static int TO_GPS = 1;
+//    public static int TO_GPS = 1;
 
 //    LatXLngY tmp = convertGRID_GPS(TO_GRID, 37.579871128849334, 126.98935225645432);
 //    Log.e(">>", "x = " + tmp.x + ", y = " + tmp.y);
@@ -33,7 +32,7 @@ public class locationChange {
 
 
         double DEGRAD = Math.PI / 180.0;
-        double RADDEG = 180.0 / Math.PI;
+//        double RADDEG = 180.0 / Math.PI;
 
         double re = RE / GRID;
         double slat1 = SLAT1 * DEGRAD;
