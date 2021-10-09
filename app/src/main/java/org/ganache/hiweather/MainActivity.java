@@ -296,8 +296,9 @@ public class MainActivity extends AppCompatActivity {
                                         Log.d("debug_test", "location.getLatitude = " + location.getLatitude());
                                         Log.d("debug_test", "location.getLongitude = " + location.getLongitude());
                                         fusedLocationClient.removeLocationUpdates(this);
-                                        startApp();
+
                                     }
+                                    startApp();
                                 }
                             };
                             fusedLocationClient.requestLocationUpdates(request, locationCallback, null);
