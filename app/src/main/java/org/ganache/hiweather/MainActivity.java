@@ -207,6 +207,10 @@ public class MainActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DATE, -1);
 
+            constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
+            if (Build.VERSION.SDK_INT >= 21)
+                getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
+
             String ytDay = ytDayFormat.format(calendar.getTime());
             Log.d("debug_test", "ytDay = " + ytDay);
             nowDay = ytDay;
@@ -315,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl(WeatherRetrofit.BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
+
 
         WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
         Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
