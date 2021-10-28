@@ -28,9 +28,9 @@
                 android:layout_marginTop="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/background_light"
-                app:layout_constraintEnd_toEndOf="@id/t3h"
-                app:layout_constraintStart_toStartOf="@+id/t3h"
-                app:layout_constraintTop_toBottomOf="@+id/t3h"
+                app:layout_constraintEnd_toEndOf="@id/tmp"
+                app:layout_constraintStart_toStartOf="@+id/tmp"
+                app:layout_constraintTop_toBottomOf="@+id/tmp"
                 style="@style/shadow"
                 tools:text="주소" />
 
@@ -62,7 +62,7 @@
 
 
             <TextView
-                android:id="@+id/t3h"
+                android:id="@+id/tmp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display3"
@@ -88,8 +88,8 @@
 
             <ImageView
                 android:id="@+id/reh_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
@@ -102,38 +102,38 @@
 
             <ImageView
                 android:id="@+id/pop_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/non_image"
                 android:src="@drawable/pop"
-                app:layout_constraintEnd_toStartOf="@+id/r06_icon"
+                app:layout_constraintEnd_toStartOf="@+id/pcp_icon"
                 app:layout_constraintStart_toEndOf="@+id/reh_icon"
                 app:layout_constraintTop_toTopOf="@+id/reh_icon" />
 
             <ImageView
-                android:id="@+id/r06_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:id="@+id/pcp_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/non_image"
-                android:src="@drawable/r06"
+                android:src="@drawable/pcp"
                 app:layout_constraintEnd_toStartOf="@id/wsd_icon"
                 app:layout_constraintStart_toEndOf="@+id/pop_icon"
                 app:layout_constraintTop_toTopOf="@+id/reh_icon" />
 
             <ImageView
                 android:id="@+id/wsd_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/non_image"
                 android:src="@drawable/wsd"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/r06_icon"
+                app:layout_constraintStart_toEndOf="@id/pcp_icon"
                 app:layout_constraintTop_toTopOf="@id/reh_icon" />
 
 
@@ -159,13 +159,13 @@
                 app:layout_constraintTop_toTopOf="@+id/reh" />
 
             <TextView
-                android:id="@+id/r06"
+                android:id="@+id/pcp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="강수량"
                 style="@style/WeatherText"
-                app:layout_constraintEnd_toEndOf="@+id/r06_icon"
-                app:layout_constraintStart_toStartOf="@+id/r06_icon"
+                app:layout_constraintEnd_toEndOf="@+id/pcp_icon"
+                app:layout_constraintStart_toStartOf="@+id/pcp_icon"
                 app:layout_constraintTop_toTopOf="@+id/reh" />
 
             <TextView
@@ -201,14 +201,14 @@
                 app:layout_constraintEnd_toEndOf="@+id/pop" />
 
             <TextView
-                android:id="@+id/r06_title"
+                android:id="@+id/pcp_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/r06_title"
+                android:text="@string/pcp_title"
                 style="@style/TitleStyle"
                 app:layout_constraintTop_toTopOf="@+id/reh_title"
-                app:layout_constraintStart_toStartOf="@+id/r06"
-                app:layout_constraintEnd_toEndOf="@+id/r06" />
+                app:layout_constraintStart_toStartOf="@+id/pcp"
+                app:layout_constraintEnd_toEndOf="@+id/pcp" />
 
             <TextView
                 android:id="@+id/wsd_title"

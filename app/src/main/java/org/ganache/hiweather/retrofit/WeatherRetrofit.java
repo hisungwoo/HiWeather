@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface WeatherRetrofit {
-    String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService/";
+    String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/";
 
     @GET("getVilageFcst?serviceKey=E6PZth5Xxp14kb9K%2BcdqMVPdltgGfmjR5OY8gEi1ARAV7mibmfWj7lq54rPJx0wiWoNJ0jZHAyMMsto875iTPw%3D%3D")
     Call<Example> getTown(@Query("dataType") String dataType,

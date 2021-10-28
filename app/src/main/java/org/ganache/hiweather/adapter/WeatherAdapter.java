@@ -24,7 +24,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
     static class WeatherViewHolder extends RecyclerView.ViewHolder {
         private TextView itemTimeView;
         private ImageView itemImgView;
-        private TextView itemT3hView;
+        private TextView itemTmpView;
         private TextView itemDayView;
 
         private Animation rotateAnim_s;
@@ -33,7 +33,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         public WeatherViewHolder(View view) {
             super(view);
             itemTimeView = view.findViewById(R.id.item_time_tv);
-            itemT3hView = view.findViewById(R.id.item_t3h_tv);
+            itemTmpView = view.findViewById(R.id.item_tmp_tv);
             itemDayView = view.findViewById(R.id.item_day_tv);
             itemImgView = view.findViewById(R.id.item_img_iv);
 
@@ -64,7 +64,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
     public void onBindViewHolder(WeatherViewHolder holder, final int position) {
         TomorrowWeather item = items.get(position);
         holder.itemTimeView.setText(item.getTime());
-        holder.itemT3hView.setText(item.getTomoT3h());
+        holder.itemTmpView.setText(item.getTomoTmp());
         holder.itemDayView.setText(item.getDay());
 
         // 맑음, 구름많음, 흐림, 비, 눈, 소나기

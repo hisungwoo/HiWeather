@@ -4,7 +4,7 @@
 
     <string name="reh_title">습도</string>
     <string name="pop_title">강수확률</string>
-    <string name="r06_title">강수량</string>
+    <string name="pcp_title">강수량</string>
     <string name="wsd_title">풍속</string>
 
     <string name="weather_string">%1$s%2$s</string>

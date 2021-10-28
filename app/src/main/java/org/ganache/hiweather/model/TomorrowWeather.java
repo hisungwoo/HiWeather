@@ -4,7 +4,7 @@ public class TomorrowWeather {
     private String day;
     private String time;
     private String weather;
-    private String tomoT3h;
+    private String tomoTmp;
 
     public String getDay() {
         return day;
@@ -30,11 +30,11 @@ public class TomorrowWeather {
         this.weather = weather;
     }
 
-    public String getTomoT3h() {
-        return tomoT3h;
+    public String getTomoTmp() {
+        return tomoTmp;
     }
 
-    public void setTomoT3h(String tomoT3h) {
-        this.tomoT3h = tomoT3h;
+    public void setTomoTmp(String tomoTmp) {
+        this.tomoTmp = tomoTmp;
     }
 }

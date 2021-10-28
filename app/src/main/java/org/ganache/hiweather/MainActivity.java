@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String pty = "";
     private String sky = "";
-    private String t3h = "";
+    private String tmp = "";
     private String pop = "";
     private float wsd = 0;
-    private String r06 = "";
+    private String pcp = "";
     private String reh = "";
     private String tmx = "";
     private String tmn = "";
@@ -73,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
     LatXLngY gridXy;
 
     TextView weather_tv;
-    TextView t3h_tv;
+    TextView tmp_tv;
     TextView pop_tv;
     TextView wsd_tv;
     TextView reh_tv;
-    TextView r06_tv;
+    TextView pcp_tv;
     TextView location_tv;
 
     TextView ht_val_tv;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView weatherImgView;
     ImageView rehImgView;
     ImageView popImgView;
-    ImageView r06ImgView;
+    ImageView pcpImgView;
     ImageView wsdImgView;
     ImageView htImgView;
     ImageView mtImgView;
@@ -120,11 +120,11 @@ public class MainActivity extends AppCompatActivity {
         rotateAnim_s = AnimationUtils.loadAnimation(this, R.anim.rotate_s);
 
         weather_tv = findViewById(R.id.weather);
-        t3h_tv = findViewById(R.id.t3h);
+        tmp_tv = findViewById(R.id.tmp);
         pop_tv = findViewById(R.id.pop);
         wsd_tv = findViewById(R.id.wsd);
         reh_tv = findViewById(R.id.reh);
-        r06_tv = findViewById(R.id.r06);
+        pcp_tv = findViewById(R.id.pcp);
         location_tv = findViewById(R.id.location);
 
         ht_val_tv = findViewById(R.id.ht_val_tv);
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         weatherImgView = findViewById(R.id.imageView);
         rehImgView = findViewById(R.id.reh_icon);
         popImgView = findViewById(R.id.pop_icon);
-        r06ImgView = findViewById(R.id.r06_icon);
+        pcpImgView = findViewById(R.id.pcp_icon);
         wsdImgView = findViewById(R.id.wsd_icon);
         htImgView = findViewById(R.id.ht_img);
         mtImgView = findViewById(R.id.mt_img);
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
-        Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "200");
+        Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "270");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(@NonNull Call<Example> call, @NonNull Response<Example> response) {
@@ -351,53 +351,111 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", "timeList = " + timeList.toString());
 
                         String getDay = dayList.get(0);
+                        String tomoDay = dayList.get(1);
+
                         List<String> ptyDataList = new ArrayList<>();
                         List<String> skyDataList = new ArrayList<>();
-                        List<String> t3hDataList = new ArrayList<>();
+                        List<String> tmpDataList = new ArrayList<>();
+                        List<String> timeDataList = new ArrayList<>();
+
+                        List<String> ptyDataList2 = new ArrayList<>();
+                        List<String> skyDataList2 = new ArrayList<>();
+                        List<String> tmpDataList2 = new ArrayList<>();
+                        List<String> timeDataList2 = new ArrayList<>();
+
+
+                        Log.d("debug_test", "items.size() = " + items.size());
+                        Log.d("debug_test", "timeList.size() = " + timeList.size());
 
                         for (int i = 0; i < items.size(); i++) {
-                            for(int j = 0 ; j < 8 ; j++) {
-                                if (j != 0 && timeList.get(j).equals("0000")) {
-                                    getDay = dayList.get(1);
-                                }
+                            for(int j = 0 ; j < timeList.size() ; j++) {
+//                                if (j != 0 && timeList.get(j).equals("0000")) {
+//                                    getDay = dayList.get(1);
+//                                }
 
+                                // 하늘상태, 오늘날짜,
                                 if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
-                                    ptyDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                    ptyDataList.add(items.get(i).getFcstValue());
+                                    timeDataList.add(items.get(i).getFcstTime());
+                                } else if(items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    ptyDataList2.add(items.get(i).getFcstValue());
+                                    timeDataList2.add(items.get(i).getFcstTime());
                                 }
 
                                 if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
-                                    skyDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                    skyDataList.add(items.get(i).getFcstValue());
+                                } else if(items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    skyDataList2.add(items.get(i).getFcstValue());
                                 }
 
-                                if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
-                                    t3hDataList.add(String.valueOf(Math.round(items.get(i).getFcstValue())));
+                                if (items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    tmpDataList.add(items.get(i).getFcstValue());
+                                } else if(items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                    tmpDataList2.add(items.get(i).getFcstValue());
                                 }
                             }
                         }
 
                         Log.d("debug_test", "############# ptyDataList = " + ptyDataList);
                         Log.d("debug_test", "############# skyDataList = " + skyDataList);
-                        Log.d("debug_test", "############# t3hDataList = " + t3hDataList);
+                        Log.d("debug_test", "############# tmpDataList = " + tmpDataList);
+                        Log.d("debug_test", "############# timeDataList = " + timeDataList);
+
+
+                        Log.d("debug_test", "############# ptyDataList2 = " + ptyDataList2);
+                        Log.d("debug_test", "############# skyDataList2 = " + skyDataList2);
+                        Log.d("debug_test", "############# tmpDataList2 = " + tmpDataList2);
+                        Log.d("debug_test", "############# timeDataList2 = " + timeDataList2);
+
+
 
                         WeatherAdapter adapter = new WeatherAdapter();
                         recyclerView.setAdapter(adapter);
 
                         List<TomorrowWeather> weatherItems = new ArrayList<>();
 
+//                        String toDay = dayList.get(0);
+//                        for (int i = 0; i < timeList.size(); i++) {
+//                            TomorrowWeather item = new TomorrowWeather();
+//
+//                            if (i != 0 && timeList.get(i).equals("0000"))
+//                                toDay = dayList.get(1);
+//
+//                            if (nowDay.equals(toDay))
+//                                item.setDay("오늘");
+//                            else
+//                                item.setDay("내일");
+//
+//                            item.setTime((timeList.get(i).substring(0 , 2)) + "시");
+//                            item.setTomoTmp(" " + tmpDataList.get(i) + "˚");
+//
+//                            if (ptyDataList.get(i).equals("0")) {
+//                                if (skyDataList.get(i).equals("1")) {
+//                                    item.setWeather("맑음");
+//                                } else if (skyDataList.get(i).equals("3")) {
+//                                    item.setWeather("구름많음");
+//                                } else if (skyDataList.get(i).equals("4"))
+//                                    item.setWeather("흐림");
+//
+//                            } else {
+//                                // 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+//                                if (ptyDataList.get(i).equals("1") || ptyDataList.get(i).equals("2"))
+//                                    item.setWeather("비");
+//                                else if (ptyDataList.get(i).equals("3") || ptyDataList.get(i).equals("6") || ptyDataList.get(i).equals("7"))
+//                                    item.setWeather("눈");
+//                                else if (ptyDataList.get(i).equals("4") || ptyDataList.get(i).equals("5"))
+//                                    item.setWeather("소나기");
+//                            }
+//                            weatherItems.add(item);
+//                        }
+
                         String toDay = dayList.get(0);
-                        for (int i=0; i<7 ;i++) {
+                        for (int i = 0; i < timeDataList.size(); i++) {
                             TomorrowWeather item = new TomorrowWeather();
 
-                            if (i != 0 && timeList.get(i).equals("0000"))
-                                toDay = dayList.get(1);
-
-                            if (nowDay.equals(toDay))
-                                item.setDay("오늘");
-                            else
-                                item.setDay("내일");
-
-                            item.setTime((timeList.get(i).substring(0 , 2)) + "시");
-                            item.setTomoT3h(" " + t3hDataList.get(i) + "˚");
+                            item.setDay("오늘");
+                            item.setTime((timeDataList.get(i).substring(0 , 2)) + "시");
+                            item.setTomoTmp(" " + tmpDataList.get(i) + "˚");
 
                             if (ptyDataList.get(i).equals("0")) {
                                 if (skyDataList.get(i).equals("1")) {
@@ -419,6 +477,33 @@ public class MainActivity extends AppCompatActivity {
                             weatherItems.add(item);
                         }
 
+                        for (int i = 0; i < timeDataList2.size(); i++) {
+                            TomorrowWeather item = new TomorrowWeather();
+
+                            item.setDay("내일");
+                            item.setTime((timeDataList2.get(i).substring(0 , 2)) + "시");
+                            item.setTomoTmp(" " + tmpDataList2.get(i) + "˚");
+
+                            if (ptyDataList2.get(i).equals("0")) {
+                                if (skyDataList2.get(i).equals("1")) {
+                                    item.setWeather("맑음");
+                                } else if (skyDataList2.get(i).equals("3")) {
+                                    item.setWeather("구름많음");
+                                } else if (skyDataList2.get(i).equals("4"))
+                                    item.setWeather("흐림");
+
+                            } else {
+                                // 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+                                if (ptyDataList2.get(i).equals("1") || ptyDataList2.get(i).equals("2"))
+                                    item.setWeather("비");
+                                else if (ptyDataList2.get(i).equals("3") || ptyDataList2.get(i).equals("6") || ptyDataList2.get(i).equals("7"))
+                                    item.setWeather("눈");
+                                else if (ptyDataList2.get(i).equals("4") || ptyDataList2.get(i).equals("5"))
+                                    item.setWeather("소나기");
+                            }
+                            weatherItems.add(item);
+                        }
+
                         adapter.updateItems(weatherItems);
 
                         String nowFcDate = items.get(0).getFcstDate();
@@ -431,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < items.size(); i++) {
                             if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 //강수형태 :  없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
-                                switch (String.valueOf(Math.round(items.get(i).getFcstValue()))) {
+                                switch (items.get(i).getFcstValue()) {
                                     case "0":
                                         pty = "없음";
                                         break;
@@ -469,28 +554,28 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             } else if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
-                                sky = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("T3H") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
-                                // 3시간 기온
-                                t3h = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                                sky = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+                                // 1시간 기온
+                                tmp = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("POP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수확률
-                                pop = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                                pop = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("WSD") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 풍속
-                                wsd = items.get(i).getFcstValue();
+                                wsd = 0;
                             } else if (items.get(i).getCategory().equals("REH") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 습도
-                                reh = String.valueOf(Math.round(items.get(i).getFcstValue()));
-                            } else if (items.get(i).getCategory().equals("R06") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
+                                reh = items.get(i).getFcstValue();
+                            } else if (items.get(i).getCategory().equals("PCP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수량
-                                r06 = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                                pcp = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("TMX") && items.get(i).getFcstDate().equals(nowFcDate)) {
                                 // 낮 최고온도
-                                tmx = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                                tmx = items.get(i).getFcstValue();
                             } else if (items.get(i).getCategory().equals("TMN") && items.get(i).getFcstDate().equals(nowFcDate)) {
                                 // 낮 최저온도
-                                tmn = String.valueOf(Math.round(items.get(i).getFcstValue()));
+                                tmn = items.get(i).getFcstValue();
                             }
                         }
 
@@ -500,9 +585,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("debug_test", "#### TMX(최고기온) 혹은 TMN(최저기온) NULL 값");
                             for (int i = 0; i < items.size(); i++) {
                                 if (items.get(i).getCategory().equals("TMX") && items.get(i).getFcstDate().equals(tomorrowDay))
-                                    tmx = tmx.equals("") ? String.valueOf(Math.round(items.get(i).getFcstValue())) : tmx;
+                                    tmx = tmx.equals("") ? items.get(i).getFcstValue() : tmx;
                                 else if (items.get(i).getCategory().equals("TMN") && items.get(i).getFcstDate().equals(tomorrowDay))
-                                    tmn = tmn.equals("") ? String.valueOf(Math.round(items.get(i).getFcstValue())) : tmn;
+                                    tmn = tmn.equals("") ? items.get(i).getFcstValue() : tmn;
                             }
                         }
 
@@ -533,33 +618,33 @@ public class MainActivity extends AppCompatActivity {
                             weather_tv.setText(pty);
                         }
 
-                        t3h_tv.setText(getString(R.string.weather_string, " " + t3h, "˚"));
+                        tmp_tv.setText(getString(R.string.weather_string, " " + tmp, "˚"));
                         pop_tv.setText(getString(R.string.weather_string, " " + pop, "%"));
                         wsd_tv.setText(getString(R.string.weather_string, String.valueOf(wsd), "m/s"));
                         reh_tv.setText(getString(R.string.weather_string, " " + reh , "%"));
                         ht_val_tv.setText(getString(R.string.weather_string," " + tmx, "˚"));
                         mt_val_tv.setText(getString(R.string.weather_string," " + tmn, "˚"));
 
-                        r06 = r06.equals("") ? "0" : r06;
-                        r06_tv.setText(getString(R.string.weather_string, r06, "mm"));
+                        pcp = pcp.equals("강수없음") ? "0" : pcp;
+                        pcp_tv.setText(getString(R.string.weather_string, pcp, "mm"));
 
                         getMyLocation(latitude, longitude);
 
                         Log.d("debug_test", ">>>>>>> 강수형태(PTY) = " + pty);
                         Log.d("debug_test", ">>>>>>> 하늘상태(SKY) = " + sky);
-                        Log.d("debug_test", ">>>>>>> 기온(T3H) = " + t3h + "˚");
+                        Log.d("debug_test", ">>>>>>> 기온(TMP) = " + tmp + "˚");
                         Log.d("debug_test", ">>>>>>> 강수확률(POP) = " + pop + "%");
                         Log.d("debug_test", ">>>>>>> 풍속(WSD) = " + wsd + "m/s");
                         Log.d("debug_test", ">>>>>>> 습도(REH) = " + reh + "%");
-                        Log.d("debug_test", ">>>>>>> 강수량(R06) = " + r06 + "mm");
+                        Log.d("debug_test", ">>>>>>> 강수량(PCP) = " + pcp + "mm");
                         Log.d("debug_test", ">>>>>>> 최고온도(TMX) = " + tmx + "˚");
                         Log.d("debug_test", ">>>>>>> 최저온도(TMN) = " + tmn + "˚");
 
                         weatherImgView.startAnimation(rotateAnim);
-                        t3h_tv.startAnimation(scaleAnim_s);
+                        tmp_tv.startAnimation(scaleAnim_s);
                         rehImgView.startAnimation(scaleAnim);
                         popImgView.startAnimation(scaleAnim);
-                        r06ImgView.startAnimation(scaleAnim);
+                        pcpImgView.startAnimation(scaleAnim);
                         wsdImgView.startAnimation(scaleAnim);
                         htImgView.startAnimation(scaleAnim);
                         mtImgView.startAnimation(scaleAnim);
