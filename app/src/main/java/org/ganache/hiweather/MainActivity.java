@@ -350,9 +350,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("debug_test", "dayList = " + dayList.toString());
                         Log.d("debug_test", "timeList = " + timeList.toString());
 
-                        String getDay = dayList.get(0);
-                        String tomoDay = dayList.get(1);
-
                         List<String> ptyDataList = new ArrayList<>();
                         List<String> skyDataList = new ArrayList<>();
                         List<String> tmpDataList = new ArrayList<>();
@@ -363,93 +360,61 @@ public class MainActivity extends AppCompatActivity {
                         List<String> tmpDataList2 = new ArrayList<>();
                         List<String> timeDataList2 = new ArrayList<>();
 
+                        String getDay = dayList.get(0);
+                        String tomoDay = "";
+                        if (dayList.size() > 1) {
+                            tomoDay = dayList.get(1);
+                        }
+                        Log.d("debug_test", "tomoDay = " + tomoDay);
 
-                        Log.d("debug_test", "items.size() = " + items.size());
-                        Log.d("debug_test", "timeList.size() = " + timeList.size());
 
                         for (int i = 0; i < items.size(); i++) {
                             for(int j = 0 ; j < timeList.size() ; j++) {
-//                                if (j != 0 && timeList.get(j).equals("0000")) {
-//                                    getDay = dayList.get(1);
-//                                }
 
-                                // 하늘상태, 오늘날짜,
                                 if (items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     ptyDataList.add(items.get(i).getFcstValue());
                                     timeDataList.add(items.get(i).getFcstTime());
-                                } else if(items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                }
+
+                                if(items.get(i).getCategory().equals("PTY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     ptyDataList2.add(items.get(i).getFcstValue());
                                     timeDataList2.add(items.get(i).getFcstTime());
                                 }
 
                                 if (items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     skyDataList.add(items.get(i).getFcstValue());
-                                } else if(items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                }
+
+                                if(items.get(i).getCategory().equals("SKY") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     skyDataList2.add(items.get(i).getFcstValue());
                                 }
 
                                 if (items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     tmpDataList.add(items.get(i).getFcstValue());
-                                } else if(items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
+                                }
+
+                                if(items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
                                     tmpDataList2.add(items.get(i).getFcstValue());
                                 }
                             }
                         }
 
-                        Log.d("debug_test", "############# ptyDataList = " + ptyDataList);
-                        Log.d("debug_test", "############# skyDataList = " + skyDataList);
-                        Log.d("debug_test", "############# tmpDataList = " + tmpDataList);
-                        Log.d("debug_test", "############# timeDataList = " + timeDataList);
-
-
-                        Log.d("debug_test", "############# ptyDataList2 = " + ptyDataList2);
-                        Log.d("debug_test", "############# skyDataList2 = " + skyDataList2);
-                        Log.d("debug_test", "############# tmpDataList2 = " + tmpDataList2);
-                        Log.d("debug_test", "############# timeDataList2 = " + timeDataList2);
-
-
+//                        Log.d("debug_test", "############# ptyDataList = " + ptyDataList);
+//                        Log.d("debug_test", "############# skyDataList = " + skyDataList);
+//                        Log.d("debug_test", "############# tmpDataList = " + tmpDataList);
+//                        Log.d("debug_test", "############# timeDataList = " + timeDataList);
+//
+//
+//                        Log.d("debug_test", "############# ptyDataList2 = " + ptyDataList2);
+//                        Log.d("debug_test", "############# skyDataList2 = " + skyDataList2);
+//                        Log.d("debug_test", "############# tmpDataList2 = " + tmpDataList2);
+//                        Log.d("debug_test", "############# timeDataList2 = " + timeDataList2);
 
                         WeatherAdapter adapter = new WeatherAdapter();
                         recyclerView.setAdapter(adapter);
 
                         List<TomorrowWeather> weatherItems = new ArrayList<>();
 
-//                        String toDay = dayList.get(0);
-//                        for (int i = 0; i < timeList.size(); i++) {
-//                            TomorrowWeather item = new TomorrowWeather();
-//
-//                            if (i != 0 && timeList.get(i).equals("0000"))
-//                                toDay = dayList.get(1);
-//
-//                            if (nowDay.equals(toDay))
-//                                item.setDay("오늘");
-//                            else
-//                                item.setDay("내일");
-//
-//                            item.setTime((timeList.get(i).substring(0 , 2)) + "시");
-//                            item.setTomoTmp(" " + tmpDataList.get(i) + "˚");
-//
-//                            if (ptyDataList.get(i).equals("0")) {
-//                                if (skyDataList.get(i).equals("1")) {
-//                                    item.setWeather("맑음");
-//                                } else if (skyDataList.get(i).equals("3")) {
-//                                    item.setWeather("구름많음");
-//                                } else if (skyDataList.get(i).equals("4"))
-//                                    item.setWeather("흐림");
-//
-//                            } else {
-//                                // 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
-//                                if (ptyDataList.get(i).equals("1") || ptyDataList.get(i).equals("2"))
-//                                    item.setWeather("비");
-//                                else if (ptyDataList.get(i).equals("3") || ptyDataList.get(i).equals("6") || ptyDataList.get(i).equals("7"))
-//                                    item.setWeather("눈");
-//                                else if (ptyDataList.get(i).equals("4") || ptyDataList.get(i).equals("5"))
-//                                    item.setWeather("소나기");
-//                            }
-//                            weatherItems.add(item);
-//                        }
-
-                        String toDay = dayList.get(0);
                         for (int i = 0; i < timeDataList.size(); i++) {
                             TomorrowWeather item = new TomorrowWeather();
 
