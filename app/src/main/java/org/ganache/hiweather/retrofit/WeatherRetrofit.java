@@ -15,6 +15,7 @@ public interface WeatherRetrofit {
                              @Query("base_time") String base_time,
                              @Query("nx") String nx,
                              @Query("ny") String ny,
-                             @Query("numOfRows") String numOfRows);
+                             @Query("numOfRows") String numOfRows
+    );
 }
 

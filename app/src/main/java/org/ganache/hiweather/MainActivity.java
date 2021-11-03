@@ -37,10 +37,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -167,22 +169,11 @@ public class MainActivity extends AppCompatActivity {
                 .setGotoSettingButton(true)
                 .check();
 
-        startApp();
-
         swipeLayout.setOnRefreshListener(() -> {
             progressBar.setVisibility(View.VISIBLE);
             startApp();
             swipeLayout.setRefreshing(false);
         });
-
-//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//        // GPS 프로바이더 사용가능여부
-//        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//        // 네트워크 프로바이더 사용가능여부
-//        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-//
-//        Log.d("debug_test", "gps 프로바이더 = " + isGPSEnabled);
-//        Log.d("debug_test", "네트워크 = " + isNetworkEnabled);
     }
 
     private void startApp() {
@@ -195,11 +186,9 @@ public class MainActivity extends AppCompatActivity {
         String dateTime = timeDate.format(mDate);
 
         Log.d("debug_test", "nowDay = " + nowDay);
-        Log.d("debug_test", "dateTime = " + dateTime);
+//        Log.d("debug_test", "dateTime = " + dateTime);
 
         int nowTimeInt = Integer.parseInt(dateTime);
-
-        Log.d("debug_test", "nowTimeInt = " + nowTimeInt);
         //0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
 
         if (nowTimeInt < 200) {
@@ -208,8 +197,7 @@ public class MainActivity extends AppCompatActivity {
             calendar.add(Calendar.DATE, -1);
 
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
 
             String ytDay = ytDayFormat.format(calendar.getTime());
             Log.d("debug_test", "ytDay = " + ytDay);
@@ -220,43 +208,35 @@ public class MainActivity extends AppCompatActivity {
         } else if (nowTimeInt < 500) {
             nowTime = "0200";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
         } else if (nowTimeInt < 800) {
             nowTime = "0500";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorMorningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
         } else if (nowTimeInt < 1100) {
             nowTime = "0800";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorMorningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorMorningStatus));
         } else if (nowTimeInt < 1400) {
             nowTime = "1100";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
         } else if (nowTimeInt < 1700) {
             nowTime = "1400";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
         } else if (nowTimeInt < 2000) {
             nowTime = "1700";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorAfterBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorAfterStatus));
         } else if (nowTimeInt < 2300) {
             nowTime = "2000";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
         } else {
             nowTime = "2300";
             constLayout.setBackgroundColor(getResources().getColor(R.color.colorEveningBack));
-            if (Build.VERSION.SDK_INT >= 21)
-                getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorEveningStatus));
         }
 
         Log.d("debug_test", "nowTime = " + nowTime);
@@ -322,30 +302,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
-        Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "270");
+        Call<Example> reposCall = service.getTown("JSON", nowDay, nowTime, gridXy.x, gridXy.y, "150");
         reposCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(@NonNull Call<Example> call, @NonNull Response<Example> response) {
                 if(response.isSuccessful()) {
                     Log.d("debug_test", "레트로핏 성공");
 
-
                     if (response.body() != null && response.body().getResponse() != null) {
                         List<Item> items = response.body().getResponse().getBody().getItems().getItem();
 
-                        LinkedHashSet days = new LinkedHashSet();
-                        LinkedHashSet times = new LinkedHashSet();
+                        List<String> dayTempList = new ArrayList<>();
+                        List<String> timeTempList = new ArrayList<>();
 
                         for (int i = 0 ; i < items.size() ; i++) {
-                            days.add(items.get(i).getFcstDate());
-                            times.add(items.get(i).getFcstTime());
+                            dayTempList.add(items.get(i).getFcstDate());
+                            timeTempList.add(items.get(i).getFcstTime());
                         }
 
-                        List<String> dayList = new ArrayList<>();
-                        List<String> timeList = new ArrayList<>();
+                        List<String> dayList = dayTempList.stream().distinct().collect(Collectors.toList());
+                        List<String> timeList = timeTempList.stream().distinct().collect(Collectors.toList());
 
-                        dayList.addAll(days);
-                        timeList.addAll(times);
 
                         Log.d("debug_test", "dayList = " + dayList.toString());
                         Log.d("debug_test", "timeList = " + timeList.toString());
@@ -544,17 +521,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-                        // 최고, 최저온도 null 일 때
-                        if (tmx.equals("") || tmn.equals("")) {
-                            String tomorrowDay = dayList.get(1);
-                            Log.d("debug_test", "#### TMX(최고기온) 혹은 TMN(최저기온) NULL 값");
-                            for (int i = 0; i < items.size(); i++) {
-                                if (items.get(i).getCategory().equals("TMX") && items.get(i).getFcstDate().equals(tomorrowDay))
-                                    tmx = tmx.equals("") ? items.get(i).getFcstValue() : tmx;
-                                else if (items.get(i).getCategory().equals("TMN") && items.get(i).getFcstDate().equals(tomorrowDay))
-                                    tmn = tmn.equals("") ? items.get(i).getFcstValue() : tmn;
-                            }
+                        if (tmx.equals("")) {
+                            tmx = Collections.max(tmpDataList);
                         }
+
+                        if (tmn.equals("")) {
+                            tmn = Collections.min(tmpDataList);
+                        }
+
 
                         if (pty.equals("없음")) {
                             // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)

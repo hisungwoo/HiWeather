@@ -1,11 +1,28 @@
 package org.ganache.hiweather;
 
+import android.util.Log;
+import android.view.View;
+
+import org.ganache.hiweather.adapter.WeatherAdapter;
+import org.ganache.hiweather.model.Example;
+import org.ganache.hiweather.model.Item;
+import org.ganache.hiweather.model.TomorrowWeather;
+import org.ganache.hiweather.retrofit.WeatherRetrofit;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import androidx.annotation.NonNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.junit.Assert.*;
 
@@ -23,37 +40,77 @@ public class ExampleUnitTest {
 
     @Test
     public void apiTest() throws IOException {
+        List<String> tmpDataList = new ArrayList<>();
+        tmpDataList.add("13");
+        tmpDataList.add("14");
+        tmpDataList.add("12");
+        tmpDataList.add("14");
+        tmpDataList.add("13");
+
+        System.out.println("tmpData = " + tmpDataList);
+
+        String test = Collections.max(tmpDataList);
+        System.out.println("test = " + test);
 
 
-        List<String> test = new ArrayList<>();
-        test.add("0000");
-        test.add("0000");
-        test.add("0000");
-        test.add("0300");
-        test.add("0600");
-        test.add("0900");
-        test.add("1200");
-        test.add("1500");
-        test.add("1800");
-        test.add("2100");
-        test.add("0000");
-        test.add("0000");
+        String test2 = Collections.min(tmpDataList);
+        System.out.println("test2 = " + test2);
 
-        List<String> result = new ArrayList<>();
+    }
 
-        LinkedHashSet<String> linked = new LinkedHashSet<>();
 
-        for(int i = 0 ; i < test.size(); i++) {
-            System.out.println(test.get(i));
-            linked.add(test.get(i));
+    @Test
+    public void apiTest2() throws IOException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(WeatherRetrofit.BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+        WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
+        Call<Example> reposCall = service.getTown("JSON", "20211103", "1700", "58", "125", "200");
+        List<Item> items = reposCall.execute().body().getResponse().getBody().getItems().getItem();
+
+        LinkedHashSet days = new LinkedHashSet();
+        LinkedHashSet times = new LinkedHashSet();
+
+        List<String> dayList = new ArrayList<>();
+        List<String> timeList = new ArrayList<>();
+
+        for (int i = 0 ; i < items.size() ; i++) {
+            days.add(items.get(i).getFcstDate());
+            times.add(items.get(i).getFcstTime());
         }
 
+        dayList.addAll(days);
+        timeList.addAll(times);
 
-        System.out.println("linked = " + linked);
+        System.out.println("dayList = " + dayList.toString());
+        System.out.println("timeList = " + timeList.toString());
 
+    }
 
+    @Test
+    public void apiTest3() throws IOException {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(WeatherRetrofit.BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+        WeatherRetrofit service = retrofit.create(WeatherRetrofit.class);
+        Call<Example> reposCall = service.getTown("JSON", "20211103", "1700", "58", "125", "200");
+        List<Item> items = reposCall.execute().body().getResponse().getBody().getItems().getItem();
 
+        List<String> dayList = new ArrayList<>();
+        List<String> timeList = new ArrayList<>();
 
+        for (int i = 0 ; i < items.size() ; i++) {
+            dayList.add(items.get(i).getFcstDate());
+            timeList.add(items.get(i).getFcstTime());
+        }
+
+        List<String> dayList2 = dayList.stream().distinct().collect(Collectors.toList());
+        List<String> timeList2 = timeList.stream().distinct().collect(Collectors.toList());
+
+        System.out.println("dayList2 = " + dayList2.toString());
+        System.out.println("timeList2 = " + timeList2.toString());
 
     }
 }

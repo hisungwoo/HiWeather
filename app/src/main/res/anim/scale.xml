@@ -17,12 +17,12 @@
     <scale
         android:startOffset="350"
         android:fromXScale="1.0"
-        android:toXScale="1.2"
+        android:toXScale="1.3"
         android:fromYScale="1.0"
-        android:toYScale="1.2"
+        android:toYScale="1.3"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:duration="400"
+        android:duration="350"
         android:repeatCount="infinite"
         android:repeatMode="reverse"
         />
