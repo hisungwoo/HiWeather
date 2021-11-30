@@ -113,4 +113,23 @@ public class ExampleUnitTest {
         System.out.println("timeList2 = " + timeList2.toString());
 
     }
+
+    @Test
+    public void apiTest4() throws IOException {
+        String t1 = "2";
+        String t2 = "-5";
+
+        int i1 = Integer.parseInt(t1);
+        int i2 = Integer.parseInt(t2);
+
+        System.out.println("i1 = " + i1);
+        System.out.println("i2 = " + i2);
+
+        if (i1 > i2) {
+            System.out.println("i1이 큼");
+        } else {
+            System.out.println("i2가 큼");
+        }
+
+    }
 }

@@ -522,11 +522,25 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (tmx.equals("")) {
-                            tmx = Collections.max(tmpDataList);
+                            String tmxToday = Collections.max(tmpDataList);
+                            String tmxTomo = Collections.max(tmpDataList2);
+
+                            if(Integer.parseInt(tmxToday) > Integer.parseInt(tmxTomo)) {
+                                tmx = tmxToday;
+                            } else {
+                                tmx = tmxTomo;
+                            }
                         }
 
                         if (tmn.equals("")) {
-                            tmn = Collections.min(tmpDataList);
+                            String tmpToday = Collections.min(tmpDataList);
+                            String tmpTomo = Collections.min(tmpDataList2);
+
+                            if(Integer.parseInt(tmpToday) < Integer.parseInt(tmpTomo)) {
+                                tmn = tmpToday;
+                            } else {
+                                tmn = tmpTomo;
+                            }
                         }
 
 
@@ -563,9 +577,10 @@ public class MainActivity extends AppCompatActivity {
                         reh_tv.setText(getString(R.string.weather_string, " " + reh , "%"));
                         ht_val_tv.setText(getString(R.string.weather_string," " + tmx, "˚"));
                         mt_val_tv.setText(getString(R.string.weather_string," " + tmn, "˚"));
+                        pcp_tv.setText(getString(R.string.weather_string, pcp, ""));
 
-                        pcp = pcp.equals("강수없음") ? "0" : pcp;
-                        pcp_tv.setText(getString(R.string.weather_string, pcp, "mm"));
+//                        pcp = pcp.equals("강수없음") ? "0" : pcp;
+//                        pcp_tv.setText(getString(R.string.weather_string, pcp, "mm"));
 
                         getMyLocation(latitude, longitude);
 
