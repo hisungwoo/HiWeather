@@ -522,25 +522,11 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (tmx.equals("")) {
-                            String tmxToday = Collections.max(tmpDataList);
-                            String tmxTomo = Collections.max(tmpDataList2);
-
-                            if(Integer.parseInt(tmxToday) > Integer.parseInt(tmxTomo)) {
-                                tmx = tmxToday;
-                            } else {
-                                tmx = tmxTomo;
-                            }
+                            tmx = Collections.max(tmpDataList);
                         }
 
                         if (tmn.equals("")) {
-                            String tmpToday = Collections.min(tmpDataList);
-                            String tmpTomo = Collections.min(tmpDataList2);
-
-                            if(Integer.parseInt(tmpToday) < Integer.parseInt(tmpTomo)) {
-                                tmn = tmpToday;
-                            } else {
-                                tmn = tmpTomo;
-                            }
+                            tmn = Collections.min(tmpDataList);
                         }
 
 
