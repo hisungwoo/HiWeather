@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.2"
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     defaultConfig {
         applicationId "org.ganache.hiweather"
@@ -10,6 +12,8 @@ android {
         targetSdkVersion 30
         versionCode 4
         versionName "4.0"
+
+        buildConfigField("String", "OPEN_API_KEY", properties["open_api_key"])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
