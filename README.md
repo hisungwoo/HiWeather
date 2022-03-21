@@ -43,15 +43,15 @@
 <br>
 <h2>⭐️ Feature  </h1>
 
-* __시설 상세보기&nbsp;&&nbsp;카테고리&nbsp; 분류__
+* __위치권한&nbsp;허용여부&nbsp;&&nbsp;Retrofit을&nbsp;통한&nbsp;날씨정보&nbsp;제공&nbsp;__
 
 <div>
   <span align="center">
-    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159170820-c6349cbd-39d6-4247-a145-b9225063083a.gif">
+    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159282925-840d9d62-48bd-497e-b2c3-d3c5ceff1cd4.gif">
   </span>
   
   <span>
-    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159171961-c29ba580-f8fc-4708-86a3-1e53ce461da5.gif">
+    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159282976-382adaab-0b54-4bb8-a34e-2a5e7dded5a2.gif">
   </span>
 </div>
 
