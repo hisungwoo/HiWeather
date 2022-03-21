@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private float wsd = 0;
     private String pcp = "";
     private String reh = "";
-    private String tmx = "";
-    private String tmn = "";
+    private int tmx = 0;
+    private int tmn = 0;
 
     String nowTime = "";
     String nowDay = "";
@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
         int nowTimeInt = Integer.parseInt(dateTime);
         //0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300
+
 
         if (nowTimeInt < 200) {
             SimpleDateFormat ytDayFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
@@ -329,12 +330,12 @@ public class MainActivity extends AppCompatActivity {
 
                         List<String> ptyDataList = new ArrayList<>();
                         List<String> skyDataList = new ArrayList<>();
-                        List<String> tmpDataList = new ArrayList<>();
+                        List<Integer> tmpDataList = new ArrayList<>();
                         List<String> timeDataList = new ArrayList<>();
 
                         List<String> ptyDataList2 = new ArrayList<>();
                         List<String> skyDataList2 = new ArrayList<>();
-                        List<String> tmpDataList2 = new ArrayList<>();
+                        List<Integer> tmpDataList2 = new ArrayList<>();
                         List<String> timeDataList2 = new ArrayList<>();
 
                         String getDay = dayList.get(0);
@@ -367,24 +368,24 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 if (items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(getDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
-                                    tmpDataList.add(items.get(i).getFcstValue());
+                                    tmpDataList.add(Integer.parseInt(items.get(i).getFcstValue()));
                                 }
 
                                 if(items.get(i).getCategory().equals("TMP") && items.get(i).getFcstDate().equals(tomoDay) && items.get(i).getFcstTime().equals(timeList.get(j))) {
-                                    tmpDataList2.add(items.get(i).getFcstValue());
+                                    tmpDataList2.add(Integer.parseInt(items.get(i).getFcstValue()));
                                 }
                             }
                         }
 
 //                        Log.d("debug_test", "############# ptyDataList = " + ptyDataList);
 //                        Log.d("debug_test", "############# skyDataList = " + skyDataList);
-//                        Log.d("debug_test", "############# tmpDataList = " + tmpDataList);
+                        Log.d("debug_test", "############# tmpDataList = " + tmpDataList);
 //                        Log.d("debug_test", "############# timeDataList = " + timeDataList);
 //
 //
 //                        Log.d("debug_test", "############# ptyDataList2 = " + ptyDataList2);
 //                        Log.d("debug_test", "############# skyDataList2 = " + skyDataList2);
-//                        Log.d("debug_test", "############# tmpDataList2 = " + tmpDataList2);
+                        Log.d("debug_test", "############# tmpDataList2 = " + tmpDataList2);
 //                        Log.d("debug_test", "############# timeDataList2 = " + timeDataList2);
 
                         WeatherAdapter adapter = new WeatherAdapter();
@@ -512,23 +513,11 @@ public class MainActivity extends AppCompatActivity {
                             } else if (items.get(i).getCategory().equals("PCP") && items.get(i).getFcstDate().equals(nowFcDate) && items.get(i).getFcstTime().equals(nowFcTime)) {
                                 // 강수량
                                 pcp = items.get(i).getFcstValue();
-                            } else if (items.get(i).getCategory().equals("TMX") && items.get(i).getFcstDate().equals(nowFcDate)) {
-                                // 낮 최고온도
-                                tmx = items.get(i).getFcstValue();
-                            } else if (items.get(i).getCategory().equals("TMN") && items.get(i).getFcstDate().equals(nowFcDate)) {
-                                // 낮 최저온도
-                                tmn = items.get(i).getFcstValue();
                             }
                         }
 
-                        if (tmx.equals("")) {
-                            tmx = Collections.max(tmpDataList);
-                        }
-
-                        if (tmn.equals("")) {
-                            tmn = Collections.min(tmpDataList);
-                        }
-
+                        tmx = Collections.max(tmpDataList);
+                        tmn = Collections.min(tmpDataList);
 
                         if (pty.equals("없음")) {
                             // 구름 상태 : 맑음(1), 구름많음(3), 흐림(4)
