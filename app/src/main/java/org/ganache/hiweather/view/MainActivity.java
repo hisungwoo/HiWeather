@@ -1,4 +1,4 @@
-package org.ganache.hiweather.view.main;
+package org.ganache.hiweather.view;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -15,8 +15,10 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.ganache.hiweather.R;
 import org.ganache.hiweather.adapter.WeatherAdapter;
+import org.ganache.hiweather.contract.MainContract;
 import org.ganache.hiweather.model.LatXLngY;
 import org.ganache.hiweather.model.TomorrowWeather;
+import org.ganache.hiweather.presenter.MainPresenter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void getWeather() {
-        presenter.getWeatherInfo(nowDay, nowTime, gridXy);
+        presenter.requestApi(nowDay, nowTime, gridXy);
     }
 
     @Override
