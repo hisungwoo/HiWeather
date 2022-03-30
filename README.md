@@ -34,7 +34,7 @@
 
 * MVP 패턴 적용
 
-* Retrofit을 활용하여 Api 연동
+* Retrofit을 활용하여 API 연동
 
 * 앱 출시 
 
@@ -62,16 +62,16 @@
 <br>
 <h2>:books: 개발 스택 </h1>
 
-```Java``` ```Retrofit``` ```MVP(진행중)``` ```GeoCoder``` ```Recyclerview``` ```OpenApi```
+```Java``` ```Retrofit``` ```MVP 패턴``` ```GeoCoder``` ```Recyclerview``` ```OpenApi```
 
 
 
 <br>
 <h2>🛠 개선 사항 </h1>
 
-* MVP 패턴 적용하지 못함 (진행중)
+* 예외 상황에 대한 대응이 부족함
 
-* 소스 정리 필요
+
 
 
 
