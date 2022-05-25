@@ -47,11 +47,11 @@
 
 <div>
   <span align="center">
-    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159282925-840d9d62-48bd-497e-b2c3-d3c5ceff1cd4.gif">
+    <img width="100%" src="https://user-images.githubusercontent.com/37431121/159282925-840d9d62-48bd-497e-b2c3-d3c5ceff1cd4.gif">
   </span>
   
   <span>
-    <img width="27%" src="https://user-images.githubusercontent.com/37431121/159282976-382adaab-0b54-4bb8-a34e-2a5e7dded5a2.gif">
+    <img width="100%" src="https://user-images.githubusercontent.com/37431121/159282976-382adaab-0b54-4bb8-a34e-2a5e7dded5a2.gif">
   </span>
 </div>
 
